@@ -201,10 +201,48 @@ void Initializer_Advanced()
     vector <vector<Map_Components>> map ;
     map.resize( map_size , vector<Map_Components> (map_size) ); // Creates a two-dimensional vector with the dimensions of map size * map size
 
-    system("cls");  // This function clears the console
-    cout << "Enter the map size : " << map_size << endl ;
     cout << "Enter the quorum for the win : ";  // In these few lines, a quorum of points to win is received from the user
     int quorum_point;
     cin >> quorum_point;
 
+    Invalid_Selection = false;
+    do
+    {
+        char Spaceship_Type ;
+        string Spaceship_Type_name ;
+        Invalid_Selection = false;
+        cout << "Select the type of spaceship : " << endl   // In these few lines, we take the type of spaceship from the user
+         << "1- spaceship 1" << endl
+         << "2- spaceship 2" << endl
+         << "3- spaceship 3" << endl ;
+        Spaceship_Type = getch();
+        switch (Spaceship_Type)
+        {
+        case '1':
+            system("cls");  // This function clears the console
+            cout << "Select the type of spaceship : spaceship 1 " << endl ;
+            Spaceship_Type_name = "spaceship 1" ;   // In this line, we assign the name of a type of spaceship to a string variable to be used in subsequent functions.
+            break;
+
+        case '2':
+            system("cls");  // This function clears the console
+            cout << "Select the type of spaceship : spaceship 2 " << endl ;
+            Spaceship_Type_name = "spaceship 2" ;   // In this line, we assign the name of a type of spaceship to a string variable to be used in subsequent functions.
+            break;
+
+        case '3':
+            system("cls");  // This function clears the console
+            cout << "Select the type of spaceship : spaceship 3 " << endl ;
+            Spaceship_Type_name = "spaceship 3" ;   // In this line, we assign the name of a type of spaceship to a string variable to be used in subsequent functions.
+            break;
+
+        default:
+            Invalid_Selection = true;
+            system("cls");  // This function clears the console
+            cerr << Red << "Invalid Selection !" << Reset <<endl ;  // In this line, if an invalid choice is made by the user, an error will be displayed on the console
+            break;
+        }
+    } while (Invalid_Selection);
+    cout << "Enter the map size : " << map_size << endl ;
+    cout << "Enter the quorum for the win : " << quorum_point << endl; 
 }
