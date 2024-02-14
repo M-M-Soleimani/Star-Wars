@@ -5,6 +5,7 @@
 using namespace std;
 
 bool Menu();
+bool Game_Mode();
 
 int main()
 {
@@ -12,7 +13,7 @@ int main()
     {
         Menu();
     }
-    
+
     return 0;
 }
 
@@ -34,7 +35,10 @@ bool Menu()
         switch (user_selection)
         {
         case '1':
-            /*code*/
+            if (Game_Mode())
+            {
+                return false;
+            }
             return true;
             break;
 
@@ -65,6 +69,41 @@ bool Menu()
 
         case '7':
             /*code*/
+            return false;
+            break;
+
+        default:
+            Invalid_Selection = true;
+            break;
+        }
+    } while (Invalid_Selection);
+    return false;
+}
+
+bool Game_Mode()
+{
+    system("cls");
+    cout << "1- Game Mode " << endl
+         << "2- Continue Game " << endl
+         << "3- Exit " << endl;
+    char user_selection;
+    user_selection = getch();
+    bool Invalid_Selection = false;
+    do
+    {
+        switch (user_selection)
+        {
+        case '1':
+            /* code */
+            return true;
+            break;
+
+        case '2':
+            /* code */
+            return true;
+            break;
+
+        case '3':
             return false;
             break;
 
