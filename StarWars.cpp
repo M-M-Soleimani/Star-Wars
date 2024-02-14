@@ -4,8 +4,8 @@
 
 using namespace std;
 
-bool Menu();
-bool Game_Mode();
+bool Menu();    // function that displays the menu to the user
+bool Game_Mode();   // function that allows the user to choose between two types of games
 
 int main()
 {
@@ -83,8 +83,8 @@ bool Menu()
 bool Game_Mode()
 {
     system("cls");
-    cout << "1- Game Mode " << endl
-         << "2- Continue Game " << endl
+    cout << "1- Basic Mode " << endl
+         << "2- Advanced Mode " << endl
          << "3- Exit " << endl;
     char user_selection;
     user_selection = getch();
