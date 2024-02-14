@@ -1,6 +1,8 @@
 #include <iostream>
 #include <conio.h>
 #include <windows.h>
+#include<vector>
+#include<string>
 
 // Defining color codes to beautify the game
 #define Black "\u001b[30m"
@@ -23,14 +25,24 @@
 
 using namespace std;
 
+struct Map_Components   // A data structure for the components in the game map
+{
+    string name ;
+    int Health ;
+    int damage ;
+};
+
+
 bool Menu();    // function that displays the menu to the user
 bool Game_Mode();   // function that allows the user to choose between two types of games
+void Initializer_Basic(); // A function for game preparation and initialization for Basic Mode
+void Initializer_Advanced(); // A function for game preparation and initialization for Advanced Mode
 
 int main()
 {
     while (Menu())
     {
-        /*code*/
+        
     }
 
     return 0;
@@ -118,12 +130,12 @@ bool Game_Mode()
         switch (user_selection)
         {
         case '1':
-            /* code */
+            Initializer_Basic();
             return true;
             break;
 
         case '2':
-            /* code */
+            Initializer_Advanced();
             return true;
             break;
 
@@ -139,4 +151,60 @@ bool Game_Mode()
         }
     } while (Invalid_Selection);
     return false;
+}
+
+void Initializer_Basic()
+{
+    system("cls");  // This function clears the console
+    bool Invalid_Selection = false;
+    int map_size ;
+    do
+    {
+        Invalid_Selection = false;
+        cout << "Enter the map size : " ;   // In these few lines, the dimensions of the playground are received from the user
+        cin >> map_size ;
+        if ( map_size <= 15 )
+        {
+            Invalid_Selection = true;
+            system("cls");  // This function clears the console
+            cerr << Red << "Invalid size ! (Map size should be bigger than 15) " << Reset <<endl ;  // In this line, if an invalid choice is made by the user, an error will be displayed on the console
+        }
+    } while (Invalid_Selection);
+    vector <vector<Map_Components>> map ;
+    map.resize( map_size , vector<Map_Components> (map_size) ); // Creates a two-dimensional vector with the dimensions of map size * map size
+
+    system("cls");  // This function clears the console
+    cout << "Enter the map size : " << map_size << endl ;
+    cout << "Enter the quorum for the win : ";  // In these few lines, a quorum of points to win is received from the user
+    int quorum_point;
+    cin >> quorum_point;
+
+}
+
+void Initializer_Advanced()
+{
+    system("cls");  // This function clears the console
+    bool Invalid_Selection = false;
+    int map_size ;
+    do
+    {
+        Invalid_Selection = false;
+        cout << "Enter the map size : " ;   // In these few lines, the dimensions of the playground are received from the user
+        cin >> map_size ;
+        if ( map_size <= 15 )
+        {
+            Invalid_Selection = true;
+            system("cls");  // This function clears the console
+            cerr << Red << "Invalid size ! (Map size should be bigger than 15) " << Reset <<endl ;  // In this line, if an invalid choice is made by the user, an error will be displayed on the console
+        }
+    } while (Invalid_Selection);
+    vector <vector<Map_Components>> map ;
+    map.resize( map_size , vector<Map_Components> (map_size) ); // Creates a two-dimensional vector with the dimensions of map size * map size
+
+    system("cls");  // This function clears the console
+    cout << "Enter the map size : " << map_size << endl ;
+    cout << "Enter the quorum for the win : ";  // In these few lines, a quorum of points to win is received from the user
+    int quorum_point;
+    cin >> quorum_point;
+
 }
