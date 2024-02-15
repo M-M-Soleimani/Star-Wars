@@ -44,6 +44,7 @@ void Initializer_Basic(); // function for game preparation and initialization fo
 void Initializer_Advanced(); // function for game preparation and initialization for Advanced Mode
 void positioning( vector <vector<Map_Components>>& map , int map_size ); // function that determines the position of elements in the map
 void display( vector <vector<Map_Components>> map , int map_size ); // This function displays the game map
+void Move_Spaceship( vector <vector<Map_Components>>& map , int map_size ); //This function moves the spaceship left and right
 
 int main()
 {
@@ -186,7 +187,11 @@ void Initializer_Basic()
     int quorum_point;
     cin >> quorum_point;
     positioning( map , map_size );  // This function specifies the position of game elements
-    display( map , map_size );  // This function displays the game map
+    while (true)    // just for test
+    {
+        display( map , map_size );  // This function displays the game map
+        Move_Spaceship( map , map_size );   // call the Move_Spaceship function
+    }
 }
 
 void Initializer_Advanced()
@@ -409,5 +414,76 @@ void display( vector <vector<Map_Components>> map , int map_size )
             }
         }
         cout << endl;
+    }
+}
+
+void Move_Spaceship( vector <vector<Map_Components>>& map , int map_size )
+{
+    int User_Selection ;
+    User_Selection = getch();
+    int row , colum ;    
+    for (size_t i = 0 ; i < map_size ; i++) // In these few lines we find the position of the spaceship
+    {
+        if (map[map_size -1][i].name == "Spaceship" )
+        {
+            row = map_size - 1 ;
+            colum = i ;
+            break;
+        }
+    }
+    switch (User_Selection)
+    {
+    case 100 :  // If we choose the letter D, we move to the right
+        if ( (colum + 1 ) < map_size )  // This condition checks not to leave the game map
+        {
+            map[row][colum + 1].name = map[row][colum].name ;
+            map[row][colum + 1].Health = map[row][colum].Health;
+            map[row][colum + 1].damage = map[row][colum].damage ;
+            map[row][colum + 1].size = map[row][colum].size ;
+            map[row][colum + 1].color = map[row][colum].color ;
+            map[row][colum + 1].character = map[row][colum].character ;
+
+            map[row][colum].name = "empty";
+            map[row][colum].Health = 0;
+            map[row][colum].damage = 0 ;
+            map[row][colum].size = 1*1 ;
+            map[row][colum].color = "White" ;
+            map[row][colum].character = "[ ]";
+        }
+        else
+        {
+            cerr << Red << "Invalid Move !" << Reset <<endl ;  // In this line, if an invalid move is made by the user, an error will be displayed on the console
+            Sleep(200); //This function freezes the console for 200 milliseconds
+        }
+        break;
+    
+    case 97 :   // If we choose the letter A, we move to the left
+        if ( colum - 1 >= 0 )   //// This condition checks not to leave the game map
+        {
+            map[row][colum - 1].name = map[row][colum].name ;
+            map[row][colum - 1].Health = map[row][colum].Health;
+            map[row][colum - 1].damage = map[row][colum].damage ;
+            map[row][colum - 1].size = map[row][colum].size ;
+            map[row][colum - 1].color = map[row][colum].color ;
+            map[row][colum - 1].character = map[row][colum].character ;
+
+            map[row][colum].name = "empty";
+            map[row][colum].Health = 0;
+            map[row][colum].damage = 0 ;
+            map[row][colum].size = 1*1 ;
+            map[row][colum].color = "White" ;
+            map[row][colum].character = "[ ]";
+        }
+        else
+        {
+            cerr << Red << "Invalid Move !" << Reset <<endl ;  // In this line, if an invalid move is made by the user, an error will be displayed on the console
+            Sleep(200); //This function freezes the console for 200 milliseconds
+        }
+        break;
+    
+    default:
+        cerr << Red << "Invalid Selection !" << Reset <<endl ;  // In this line, if an invalid choice is made by the user, an error will be displayed on the console        Sleep(200); //This function freezes the console for 200 milliseconds
+        Sleep(200); //This function freezes the console for 200 milliseconds
+        break;
     }
 }
