@@ -259,18 +259,23 @@ void positioning( vector <vector<Map_Components>>& map , int map_size )
 {
     srand(time(0)); // A function that generates random numbers with an initial seed of time 0
     unsigned int row , column ;
+    bool in_it = false ;
     for (size_t i = 0; i < (map_size - 1); i++) // In these few lines, if there is no native ship, a ship will be created
     {
-        if (map[map_size - 1][i].name != "Spaceship")
+        if (map[map_size - 1][i].name == "Spaceship")
         {
-            map[map_size - 1][(map_size - 1) / 2].name = "Spaceship" ;
-            map[map_size - 1][(map_size - 1) / 2].Health = 3 ;
-            map[map_size - 1][(map_size - 1) / 2].damage = 2147483647 ; // The largest possible value for an integer data type
-            map[map_size - 1][(map_size - 1) / 2].size = 1 ;
-            map[map_size - 1][(map_size - 1) / 2].color = "Bright_Green" ;
-            map[map_size - 1][(map_size - 1) / 2].character = "[#]" ;
-        break;
+            in_it = true ;
+            break;
         }
+    }
+    if (!in_it)
+    {
+        map[map_size - 1][(map_size - 1) / 2].name = "Spaceship" ;
+        map[map_size - 1][(map_size - 1) / 2].Health = 3 ;
+        map[map_size - 1][(map_size - 1) / 2].damage = 2147483647 ; // The largest possible value for an integer data type
+        map[map_size - 1][(map_size - 1) / 2].size = 1 ;
+        map[map_size - 1][(map_size - 1) / 2].color = "Bright_Green" ;
+        map[map_size - 1][(map_size - 1) / 2].character = "[#]" ;
     }
     int Enemy_Type ;
     bool Invalid_position = false ;
