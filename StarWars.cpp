@@ -33,7 +33,7 @@ struct Map_Components   // A data structure for the components in the game map w
     int Health = 0;
     int damage = 0 ;
     int size = 1*1 ;
-    string color ;
+    string color = "White" ;
     string character = "[ ]";
 };
 
@@ -42,7 +42,8 @@ bool Menu();    // function that displays the menu to the user
 bool Game_Mode();   // function that allows the user to choose between two types of games
 void Initializer_Basic(); // function for game preparation and initialization for Basic Mode
 void Initializer_Advanced(); // function for game preparation and initialization for Advanced Mode
-void positioning( vector <vector<Map_Components>> map , int map_size ); // function that determines the position of elements in the map
+void positioning( vector <vector<Map_Components>>& map , int map_size ); // function that determines the position of elements in the map
+void display( vector <vector<Map_Components>> map , int map_size ); // This function displays the game map
 
 int main()
 {
@@ -185,7 +186,7 @@ void Initializer_Basic()
     int quorum_point;
     cin >> quorum_point;
     positioning( map , map_size );  // This function specifies the position of game elements
-
+    display( map , map_size );  // This function displays the game map
 }
 
 void Initializer_Advanced()
@@ -254,7 +255,7 @@ void Initializer_Advanced()
     cout << "Enter the quorum for the win : " << quorum_point << endl; 
 }
 
-void positioning( vector <vector<Map_Components>> map , int map_size )
+void positioning( vector <vector<Map_Components>>& map , int map_size )
 {
     srand(time(0)); // A function that generates random numbers with an initial seed of time 0
     unsigned int row , column ;
@@ -363,5 +364,45 @@ void positioning( vector <vector<Map_Components>> map , int map_size )
         }
         } while (Invalid_position);
         break;
+    }
+}
+
+void display( vector <vector<Map_Components>> map , int map_size )
+{
+    system("cls");  // This function clears the console
+    for (size_t i = 0; i < map_size; i++)
+    {
+        for (size_t j = 0; j < map_size; j++)
+        {
+            if (map[i][j].color == "Bright_Green")  // In the following conditions, the color for printing the map components is specified and they are displayed in the console
+            {
+                cout << Bright_Green << map[i][j].character << Reset ;
+            }
+            else if (map[i][j].color == "Bright_Cyan")
+            {
+                cout << Bright_Cyan << map[i][j].character << Reset ;
+            }
+            else if (map[i][j].color == "Bright_Blue")
+            {
+                cout << Bright_Blue << map[i][j].character << Reset ;
+            }
+            else if (map[i][j].color == "Blue")
+            {
+                cout << Blue << map[i][j].character << Reset ;
+            }
+            else if (map[i][j].color == "Magenta")
+            {
+                cout << Magenta << map[i][j].character << Reset ;
+            }
+            else if (map[i][j].color == "Bright_Red")
+            {
+                cout << Bright_Red << map[i][j].character << Reset ;
+            }
+            else
+            {
+                cout << White << map[i][j].character << Reset ;
+            }
+        }
+        cout << endl;
     }
 }
