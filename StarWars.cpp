@@ -45,6 +45,7 @@ void Initializer_Advanced(); // function for game preparation and initialization
 void positioning( vector <vector<Map_Components>>& map , int map_size ); // function that determines the position of elements in the map
 void display( vector <vector<Map_Components>> map , int map_size ); // This function displays the game map
 void Move_Spaceship( vector <vector<Map_Components>>& map , int map_size ); //This function moves the spaceship left and right
+void Move_Enemy_Spaceship( vector <vector<Map_Components>>& map , int map_size );   // A function to move enemy spaceships
 
 int main()
 {
@@ -191,6 +192,7 @@ void Initializer_Basic()
     {
         display( map , map_size );  // This function displays the game map
         Move_Spaceship( map , map_size );   // call the Move_Spaceship function
+        Move_Enemy_Spaceship( map , map_size ); // Calling a function to move enemy spaceships
     }
 }
 
@@ -485,5 +487,64 @@ void Move_Spaceship( vector <vector<Map_Components>>& map , int map_size )
         cerr << Red << "Invalid Selection !" << Reset <<endl ;  // In this line, if an invalid choice is made by the user, an error will be displayed on the console        Sleep(200); //This function freezes the console for 200 milliseconds
         Sleep(200); //This function freezes the console for 200 milliseconds
         break;
+    }
+}
+
+void Move_Enemy_Spaceship( vector <vector<Map_Components>>& map , int map_size )
+{
+    // In the following few lines, by scrolling the vector from the bottom to the top, we move the enemy ships down if possible
+    for (int i = (map_size - 1) ; i >= 0 ; i--)
+    {
+        for (int j = (map_size - 1); j >= 0; j--)
+        {
+            if (map[i][j].name == "Dart" || map[i][j].name == "Striker" || map[i][j].name == "Wraith" || map[i][j].name == "Banshee")
+            {
+                if ((i + 1) < map_size && map[i + 1][j].name == "Spaceship")    // In the following few lines, if the enemy spaceship hits our ship, we will destroy it and we will lose some of our health.
+                {
+                    for (int z = 0; z < map_size; z++)
+                    {
+                        for (int k = 0; k < map_size; k++)
+                        {
+                            if (map[z][k].name != "Spaceship")
+                            {
+                                map[z][k].name = "empty";
+                                map[z][k].Health = 0;
+                                map[z][k].damage = 0 ;
+                                map[z][k].size = 1*1 ;
+                                map[z][k].color = "White" ;
+                                map[z][k].character = "[ ]";
+                            }
+                        }
+                    }
+                    map[i + 1][j].Health = map[i + 1][j].Health - 1 ; // In this line, we reduce one of the health of the spaceship
+                }
+                else if( (i + 1) < map_size )
+                {
+                    map[i + 1][j].name = map[i][j].name ;
+                    map[i + 1][j].Health = map[i][j].Health;
+                    map[i + 1][j].damage = map[i][j].damage ;
+                    map[i + 1][j].size = map[i][j].size ;
+                    map[i + 1][j].color = map[i][j].color ;
+                    map[i + 1][j].character = map[i][j].character ;
+
+                    map[i][j].name = "empty";
+                    map[i][j].Health = 0;
+                    map[i][j].damage = 0 ;
+                    map[i][j].size = 1*1 ;
+                    map[i][j].color = "White" ;
+                    map[i][j].character = "[ ]";
+                }
+                else
+                {
+                    map[i][j].name = "empty";
+                    map[i][j].Health = 0;
+                    map[i][j].damage = 0 ;
+                    map[i][j].size = 1*1 ;
+                    map[i][j].color = "White" ;
+                    map[i][j].character = "[ ]";
+                }
+                
+            }
+        }
     }
 }
