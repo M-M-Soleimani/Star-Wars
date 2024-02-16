@@ -44,8 +44,9 @@ void Initializer_Basic(); // function for game preparation and initialization fo
 void Initializer_Advanced(); // function for game preparation and initialization for Advanced Mode
 void positioning( vector <vector<Map_Components>>& map , int map_size ); // function that determines the position of elements in the map
 void display( vector <vector<Map_Components>> map , int map_size ); // This function displays the game map
-void Move_Spaceship( vector <vector<Map_Components>>& map , int map_size ); //This function moves the spaceship left and right
+void Move_Spaceship( vector <vector<Map_Components>>& map , int map_size ,int& Spaceship_position ); //This function moves the spaceship left and right
 void Move_Enemy_Spaceship( vector <vector<Map_Components>>& map , int map_size );   // A function to move enemy spaceships
+void Shoot( vector <vector<Map_Components>>& map , int map_size , int& Spaceship_position );    // A function to fire bullets
 
 int main()
 {
@@ -188,11 +189,13 @@ void Initializer_Basic()
     int quorum_point;
     cin >> quorum_point;
     positioning( map , map_size );  // This function specifies the position of game elements
+    int Spaceship_position ;
     while (true)    // just for test
     {
         display( map , map_size );  // This function displays the game map
-        Move_Spaceship( map , map_size );   // call the Move_Spaceship function
+        Move_Spaceship( map , map_size , Spaceship_position);   // call the Move_Spaceship function
         Move_Enemy_Spaceship( map , map_size ); // Calling a function to move enemy spaceships
+        Shoot( map , map_size , Spaceship_position );   // Calling a function to fire bullets
     }
 }
 
@@ -419,7 +422,7 @@ void display( vector <vector<Map_Components>> map , int map_size )
     }
 }
 
-void Move_Spaceship( vector <vector<Map_Components>>& map , int map_size )
+void Move_Spaceship( vector <vector<Map_Components>>& map , int map_size , int& Spaceship_position )
 {
     int User_Selection ;
     User_Selection = getch();
@@ -430,6 +433,7 @@ void Move_Spaceship( vector <vector<Map_Components>>& map , int map_size )
         {
             row = map_size - 1 ;
             colum = i ;
+            Spaceship_position = colum ;
             break;
         }
     }
@@ -547,4 +551,49 @@ void Move_Enemy_Spaceship( vector <vector<Map_Components>>& map , int map_size )
             }
         }
     }
+}
+
+void Shoot( vector <vector<Map_Components>>& map , int map_size , int& Spaceship_position )
+{
+    for (size_t i = 0; i < map_size ; i++)  // In the following few lines, if there is a bullet, and if possible, we move the bullet up
+    {
+        for (size_t j = 0; j < map_size; j++)
+        {
+            if (map[i][j].name == "bullet")
+            {
+                if( i > 0 )   // If possible, we move the bullet up
+                {
+                    map[i - 1][j].name = map[i][j].name ;
+                    map[i - 1][j].Health = map[i][j].Health;
+                    map[i - 1][j].damage = map[i][j].damage ;
+                    map[i - 1][j].size = map[i][j].size ;
+                    map[i - 1][j].color = map[i][j].color ;
+                    map[i - 1][j].character = map[i][j].character ;
+
+                    map[i][j].name = "empty";
+                    map[i][j].Health = 0;
+                    map[i][j].damage = 0 ;
+                    map[i][j].size = 1*1 ;
+                    map[i][j].color = "White" ;
+                    map[i][j].character = "[ ]";
+                }
+                else    // Otherwise (the bullet is on the edge of the map) we remove it from the map
+                {
+                    map[i][j].name = "empty";
+                    map[i][j].Health = 0;
+                    map[i][j].damage = 0 ;
+                    map[i][j].size = 1*1 ;
+                    map[i][j].color = "White" ;
+                    map[i][j].character = "[ ]";
+                }
+            }
+        }
+    }
+    // We create a bullet in a few lines below
+    map[map_size - 2][Spaceship_position].name = "bullet" ;
+    map[map_size - 2][Spaceship_position].Health = 0 ;
+    map[map_size - 2][Spaceship_position].damage = 1 ; 
+    map[map_size - 2][Spaceship_position].size = 1 ;
+    map[map_size - 2][Spaceship_position].color = "Bright_Red" ;
+    map[map_size - 2][Spaceship_position].character = "[^]" ;
 }
