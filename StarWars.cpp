@@ -505,7 +505,7 @@ void Move_Enemy_Spaceship( vector <vector<Map_Components>>& map , int map_size )
                     {
                         for (int k = 0; k < map_size; k++)
                         {
-                            if (map[z][k].name != "Spaceship")
+                            if (map[z][k].name != "Spaceship" && map[z][k].name != "bullet")
                             {
                                 map[z][k].name = "empty";
                                 map[z][k].Health = 0;
