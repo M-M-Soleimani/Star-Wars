@@ -501,6 +501,21 @@ void Move_Spaceship( vector <vector<Map_Components>>& map , int map_size , int& 
         /*code*/
         break;
 
+    case 32 :
+        int user_slection  ;
+        do
+        {
+            system("cls || clear");  // This function clears the console
+            cout << Bright_Yellow_new << "Press space to continue the game or press S to save" << Reset << endl ;
+            user_slection = getch() ;
+            if (user_slection == 115)
+            {
+                /*code*/
+                break;
+            }
+        } while (user_slection != 32 && user_slection != 115 );
+        break;
+
     default:
         cerr << Red << "Invalid Selection !" << Reset <<endl ;  // In this line, if an invalid choice is made by the user, an error will be displayed on the console        Sleep(200); //This function freezes the console for 200 milliseconds
         Sleep(200); //This function freezes the console for 200 milliseconds
@@ -660,4 +675,5 @@ void Show_information(int map_size , int quorum_point , int point , int spaceshi
     cout << Bright_Cyan << "Quorum of points : " << quorum_point << Reset << endl ;
     cout << Bright_Blue << "point : " << point << Reset << endl ;
     cout << Bright_Yellow_new << "Select 'ecs' to exit and save" << Reset << endl ;
+    cout << Bright_Yellow_new << "Press space to pause the game" << Reset << endl ;
 }
