@@ -33,7 +33,7 @@ struct Map_Components   // A data structure for the components in the game map w
     int Health = 0;
     int damage = 0 ;
     int size = 1*1 ;
-    string color = "White" ;
+    string color = "Bright_cyan" ;
     string character = "[ ]";
 };
 
@@ -47,6 +47,7 @@ void display( vector <vector<Map_Components>> map , int map_size ); // This func
 void Move_Spaceship( vector <vector<Map_Components>>& map , int map_size ,int& Spaceship_position ); //This function moves the spaceship left and right
 void Move_Enemy_Spaceship( vector <vector<Map_Components>>& map , int map_size );   // A function to move enemy spaceships
 void Shoot( vector <vector<Map_Components>>& map , int map_size , int& Spaceship_position );    // A function to fire bullets
+void is_dead( vector <vector<Map_Components>>& map , int map_size );    // This function is responsible for checking the existence of a map component
 
 int main()
 {
@@ -60,7 +61,7 @@ int main()
 
 bool Menu()
 {
-    system("cls");  // This function clears the console
+    system("cls || clear");  // This function clears the console
     bool Invalid_Selection = false;
     do
     {
@@ -117,7 +118,7 @@ bool Menu()
 
         default:
             Invalid_Selection = true;
-            system("cls");  // This function clears the console
+            system("cls || clear");  // This function clears the console
             cerr << Red << "Invalid Selection !" << Reset <<endl ;  // In this line, if an invalid choice is made by the user, an error will be displayed on the console
             break;
         }
@@ -127,7 +128,7 @@ bool Menu()
 
 bool Game_Mode()
 {
-    system("cls");  // This function clears the console
+    system("cls || clear");  // This function clears the console
     bool Invalid_Selection = false;
     do
     {
@@ -155,7 +156,7 @@ bool Game_Mode()
 
         default:
             Invalid_Selection = true;
-            system("cls");  // This function clears the console
+            system("cls || clear");  // This function clears the console
             cerr << Red << "Invalid Selection !" << Reset <<endl ;  // In this line, if an invalid choice is made by the user, an error will be displayed on the console
             break;
         }
@@ -165,7 +166,7 @@ bool Game_Mode()
 
 void Initializer_Basic()
 {
-    system("cls");  // This function clears the console
+    system("cls || clear");  // This function clears the console
     bool Invalid_Selection = false;
     int map_size ;
     do
@@ -176,14 +177,14 @@ void Initializer_Basic()
         if ( map_size <= 15 )
         {
             Invalid_Selection = true;
-            system("cls");  // This function clears the console
+            system("cls || clear");  // This function clears the console
             cerr << Red << "Invalid size ! (Map size should be bigger than 15) " << Reset <<endl ;  // In this line, if an invalid choice is made by the user, an error will be displayed on the console
         }
     } while (Invalid_Selection);
     vector <vector<Map_Components>> map ;
     map.resize( map_size , vector<Map_Components> (map_size) ); // Creates a two-dimensional vector with the dimensions of map size * map size
 
-    system("cls");  // This function clears the console
+    system("cls || clear");  // This function clears the console
     cout << "Enter the map size : " << map_size << endl ;
     cout << "Enter the quorum for the win : ";  // In these few lines, a quorum of points to win is received from the user
     int quorum_point;
@@ -196,12 +197,13 @@ void Initializer_Basic()
         Move_Spaceship( map , map_size , Spaceship_position);   // call the Move_Spaceship function
         Move_Enemy_Spaceship( map , map_size ); // Calling a function to move enemy spaceships
         Shoot( map , map_size , Spaceship_position );   // Calling a function to fire bullets
+        is_dead( map , map_size ); // Calling a function to check health of map map Components
     }
 }
 
 void Initializer_Advanced()
 {
-    system("cls");  // This function clears the console
+    system("cls || clear");  // This function clears the console
     bool Invalid_Selection = false;
     int map_size ;
     do
@@ -212,7 +214,7 @@ void Initializer_Advanced()
         if ( map_size <= 15 )
         {
             Invalid_Selection = true;
-            system("cls");  // This function clears the console
+            system("cls || clear");  // This function clears the console
             cerr << Red << "Invalid size ! (Map size should be bigger than 15) " << Reset <<endl ;  // In this line, if an invalid choice is made by the user, an error will be displayed on the console
         }
     } while (Invalid_Selection);
@@ -237,26 +239,26 @@ void Initializer_Advanced()
         switch (Spaceship_Type)
         {
         case '1':
-            system("cls");  // This function clears the console
+            system("cls || clear");  // This function clears the console
             cout << "Select the type of spaceship : spaceship 1 " << endl ;
             Spaceship_Type_name = "spaceship 1" ;   // In this line, we assign the name of a type of spaceship to a string variable to be used in subsequent functions.
             break;
 
         case '2':
-            system("cls");  // This function clears the console
+            system("cls || clear");  // This function clears the console
             cout << "Select the type of spaceship : spaceship 2 " << endl ;
             Spaceship_Type_name = "spaceship 2" ;   // In this line, we assign the name of a type of spaceship to a string variable to be used in subsequent functions.
             break;
 
         case '3':
-            system("cls");  // This function clears the console
+            system("cls || clear");  // This function clears the console
             cout << "Select the type of spaceship : spaceship 3 " << endl ;
             Spaceship_Type_name = "spaceship 3" ;   // In this line, we assign the name of a type of spaceship to a string variable to be used in subsequent functions.
             break;
 
         default:
             Invalid_Selection = true;
-            system("cls");  // This function clears the console
+            system("cls || clear");  // This function clears the console
             cerr << Red << "Invalid Selection !" << Reset <<endl ;  // In this line, if an invalid choice is made by the user, an error will be displayed on the console
             break;
         }
@@ -384,7 +386,7 @@ void positioning( vector <vector<Map_Components>>& map , int map_size )
 
 void display( vector <vector<Map_Components>> map , int map_size )
 {
-    system("cls");  // This function clears the console
+    system("cls || clear");  // This function clears the console
     for (size_t i = 0; i < map_size; i++)
     {
         for (size_t j = 0; j < map_size; j++)
@@ -524,6 +526,21 @@ void Move_Enemy_Spaceship( vector <vector<Map_Components>>& map , int map_size )
                 }
                 else if( (i + 1) < map_size )
                 {
+                    // In the following few lines, if a bullet hits the space safe, we will reduce its health
+                    if ( map[i+1][j].name == "bullet" ||  map[i][j].name == "bullet")
+                    {
+                        for (int z = 0; z < map_size; z++)
+                        {
+                            for (int k = 0; k < map_size; k++)
+                            {
+                                if (map[z][k].name == "Dart" || map[z][k].name == "Striker" || map[z][k].name == "Wraith" || map[z][k].name == "Banshee")
+                                {
+                                    map[z][k].Health = map[z][k].Health - 2;
+
+                                }
+                            }
+                        }
+                    }
                     map[i + 1][j].name = map[i][j].name ;
                     map[i + 1][j].Health = map[i][j].Health;
                     map[i + 1][j].damage = map[i][j].damage ;
@@ -547,7 +564,6 @@ void Move_Enemy_Spaceship( vector <vector<Map_Components>>& map , int map_size )
                     map[i][j].color = "White" ;
                     map[i][j].character = "[ ]";
                 }
-                
             }
         }
     }
@@ -561,7 +577,7 @@ void Shoot( vector <vector<Map_Components>>& map , int map_size , int& Spaceship
         {
             if (map[i][j].name == "bullet")
             {
-                if( i > 0 )   // If possible, we move the bullet up
+                if( i > 0 && map[i-1][j].name == "empty" )   // If possible, we move the bullet up
                 {
                     map[i - 1][j].name = map[i][j].name ;
                     map[i - 1][j].Health = map[i][j].Health;
@@ -596,4 +612,24 @@ void Shoot( vector <vector<Map_Components>>& map , int map_size , int& Spaceship
     map[map_size - 2][Spaceship_position].size = 1 ;
     map[map_size - 2][Spaceship_position].color = "Bright_Red" ;
     map[map_size - 2][Spaceship_position].character = "[^]" ;
+}
+
+void is_dead( vector <vector<Map_Components>>& map , int map_size )
+{
+    // In the following few lines, we search all the elements of the map and if the health is less than 0, we delete it
+    for (size_t i = 0; i < map_size; i++)
+    {
+        for (size_t j = 0; j < map_size; j++)
+        {
+            if ( map[i][j].Health <= 0 && map[i][j].name != "bullet" )
+            {
+                map[i][j].name = "empty";
+                map[i][j].Health = 0;
+                map[i][j].damage = 0 ;
+                map[i][j].size = 1*1 ;
+                map[i][j].color = "White" ;
+                map[i][j].character = "[ ]";
+            }
+        }   
+    }
 }
