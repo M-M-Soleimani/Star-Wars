@@ -481,6 +481,10 @@ void Move_Spaceship( vector <vector<Map_Components>>& map , int map_size )
         }
         break;
     
+    case 27 :
+        /*code*/
+        break;
+
     default:
         cerr << Red << "Invalid Selection !" << Reset <<endl ;  // In this line, if an invalid choice is made by the user, an error will be displayed on the console        Sleep(200); //This function freezes the console for 200 milliseconds
         Sleep(200); //This function freezes the console for 200 milliseconds
