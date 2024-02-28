@@ -5,6 +5,7 @@
 #include<string>
 #include <time.h>
 #include <stdlib.h>
+#include<fstream>
 
 // Defining color codes to beautify the game
 #define Black "\u001b[30m"
@@ -45,11 +46,12 @@ void Initializer_Basic(); // function for game preparation and initialization fo
 void Initializer_Advanced(); // function for game preparation and initialization for Advanced Mode
 void positioning( vector <vector<Map_Components>>& map , int map_size , int &spaceship_health); // function that determines the position of elements in the map
 void display( vector <vector<Map_Components>> map , int map_size ); // This function displays the game map
-void Move_Spaceship( vector <vector<Map_Components>>& map , int map_size ,int& Spaceship_position ); //This function moves the spaceship left and right
+string Move_Spaceship( vector <vector<Map_Components>>& map , int map_size , int& Spaceship_position , int quorum_point , int point , int spaceship_health); //This function moves the spaceship left and right
 void Move_Enemy_Spaceship( vector <vector<Map_Components>>& map , int map_size , int &spaceship_health );   // A function to move enemy spaceships
 void Shoot( vector <vector<Map_Components>>& map , int map_size , int& Spaceship_position );    // A function to fire bullets
 void is_dead( vector <vector<Map_Components>>& map , int map_size );    // This function is responsible for checking the existence of a map component
 void Show_information(int map_size , int quorum_point , int point , int spaceship_health ); // This function displays game information
+void save(vector <vector<Map_Components>> map , int map_size , int quorum_point , int point , int spaceship_health );
 
 int main()
 {
@@ -199,7 +201,10 @@ void Initializer_Basic()
     {
         display( map , map_size );  // This function displays the game map
         Show_information(map_size , quorum_point , point , spaceship_health );  // call the function that displays game information
-        Move_Spaceship( map , map_size , Spaceship_position);   // call the Move_Spaceship function
+        if (Move_Spaceship( map , map_size , Spaceship_position , quorum_point , point , spaceship_health)== "saved successfully")    // call the Move_Spaceship function
+        {
+            break;
+        }
         Move_Enemy_Spaceship( map , map_size , spaceship_health); // Calling a function to move enemy spaceships
         Shoot( map , map_size , Spaceship_position );   // Calling a function to fire bullets
         is_dead( map , map_size ); // Calling a function to check health of map map Components
@@ -432,7 +437,7 @@ void display( vector <vector<Map_Components>> map , int map_size )
     }
 }
 
-void Move_Spaceship( vector <vector<Map_Components>>& map , int map_size , int& Spaceship_position )
+string Move_Spaceship( vector <vector<Map_Components>>& map , int map_size , int& Spaceship_position , int quorum_point , int point , int spaceship_health)
 {
     int User_Selection ;
     User_Selection = getch();
@@ -471,6 +476,7 @@ void Move_Spaceship( vector <vector<Map_Components>>& map , int map_size , int& 
             cerr << Red << "Invalid Move !" << Reset <<endl ;  // In this line, if an invalid move is made by the user, an error will be displayed on the console
             Sleep(200); //This function freezes the console for 200 milliseconds
         }
+        return "The move was successful" ;
         break;
     
     case 97 :   // If we choose the letter A, we move to the left
@@ -495,10 +501,12 @@ void Move_Spaceship( vector <vector<Map_Components>>& map , int map_size , int& 
             cerr << Red << "Invalid Move !" << Reset <<endl ;  // In this line, if an invalid move is made by the user, an error will be displayed on the console
             Sleep(200); //This function freezes the console for 200 milliseconds
         }
+        return "The move was successful" ;
         break;
     
-    case 27 :
-        /*code*/
+    case 115 :
+        save(map , map_size , quorum_point , point , spaceship_health );
+        return "saved successfully" ;
         break;
 
     case 32 :
@@ -510,7 +518,8 @@ void Move_Spaceship( vector <vector<Map_Components>>& map , int map_size , int& 
             user_slection = getch() ;
             if (user_slection == 115)
             {
-                /*code*/
+                save(map , map_size , quorum_point , point , spaceship_health );
+                return "saved successfully";
                 break;
             }
         } while (user_slection != 32 && user_slection != 115 );
@@ -521,6 +530,7 @@ void Move_Spaceship( vector <vector<Map_Components>>& map , int map_size , int& 
         Sleep(200); //This function freezes the console for 200 milliseconds
         break;
     }
+    return "The move was successful" ;
 }
 
 void Move_Enemy_Spaceship( vector <vector<Map_Components>>& map , int map_size , int &spaceship_health )
@@ -676,4 +686,26 @@ void Show_information(int map_size , int quorum_point , int point , int spaceshi
     cout << Bright_Blue << "point : " << point << Reset << endl ;
     cout << Bright_Yellow_new << "Select 'ecs' to exit and save" << Reset << endl ;
     cout << Bright_Yellow_new << "Press space to pause the game" << Reset << endl ;
+}
+
+void save(vector <vector<Map_Components>> map , int map_size , int quorum_point , int point , int spaceship_health )
+{
+    ofstream out("game.txt" , ios :: out | ios :: app );
+    out << "new game" << endl ;
+    out << map_size << endl ;
+    out << quorum_point << endl ;
+    out << point << endl ;
+    out << spaceship_health << endl ;
+    for (size_t i = 0; i < map_size; i++)
+    {
+        for (size_t j = 0; j < map_size; j++)
+        {
+            if (map[i][j].name != "empty" )
+            {
+                out << map[i][j].name << " " << i << " " << j << endl ;
+            }
+        }
+    }
+    system("cls || clear");  // This function clears the console
+    cout << Bright_Green << "Game saved !" << Reset ;
 }
