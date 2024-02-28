@@ -24,6 +24,7 @@
 #define Bright_Magenta "\u001b[35;1m"
 #define Bright_Cyan "\u001b[36;1m"
 #define Bright_White "\u001b[37;1m"
+#define Bright_Yellow_new "\u001b[33;4m"
 
 using namespace std;
 
@@ -42,12 +43,13 @@ bool Menu();    // function that displays the menu to the user
 bool Game_Mode();   // function that allows the user to choose between two types of games
 void Initializer_Basic(); // function for game preparation and initialization for Basic Mode
 void Initializer_Advanced(); // function for game preparation and initialization for Advanced Mode
-void positioning( vector <vector<Map_Components>>& map , int map_size ); // function that determines the position of elements in the map
+void positioning( vector <vector<Map_Components>>& map , int map_size , int &spaceship_health); // function that determines the position of elements in the map
 void display( vector <vector<Map_Components>> map , int map_size ); // This function displays the game map
 void Move_Spaceship( vector <vector<Map_Components>>& map , int map_size ,int& Spaceship_position ); //This function moves the spaceship left and right
-void Move_Enemy_Spaceship( vector <vector<Map_Components>>& map , int map_size );   // A function to move enemy spaceships
+void Move_Enemy_Spaceship( vector <vector<Map_Components>>& map , int map_size , int &spaceship_health );   // A function to move enemy spaceships
 void Shoot( vector <vector<Map_Components>>& map , int map_size , int& Spaceship_position );    // A function to fire bullets
 void is_dead( vector <vector<Map_Components>>& map , int map_size );    // This function is responsible for checking the existence of a map component
+void Show_information(int map_size , int quorum_point , int point , int spaceship_health ); // This function displays game information
 
 int main()
 {
@@ -189,13 +191,16 @@ void Initializer_Basic()
     cout << "Enter the quorum for the win : ";  // In these few lines, a quorum of points to win is received from the user
     int quorum_point;
     cin >> quorum_point;
-    positioning( map , map_size );  // This function specifies the position of game elements
     int Spaceship_position ;
+    int point = 0 ;
+    int spaceship_health ;
+    positioning( map , map_size , spaceship_health);  // This function specifies the position of game elements
     while (true)    // just for test
     {
         display( map , map_size );  // This function displays the game map
+        Show_information(map_size , quorum_point , point , spaceship_health );  // call the function that displays game information
         Move_Spaceship( map , map_size , Spaceship_position);   // call the Move_Spaceship function
-        Move_Enemy_Spaceship( map , map_size ); // Calling a function to move enemy spaceships
+        Move_Enemy_Spaceship( map , map_size , spaceship_health); // Calling a function to move enemy spaceships
         Shoot( map , map_size , Spaceship_position );   // Calling a function to fire bullets
         is_dead( map , map_size ); // Calling a function to check health of map map Components
     }
@@ -267,7 +272,7 @@ void Initializer_Advanced()
     cout << "Enter the quorum for the win : " << quorum_point << endl; 
 }
 
-void positioning( vector <vector<Map_Components>>& map , int map_size )
+void positioning( vector <vector<Map_Components>>& map , int map_size  , int &spaceship_health)
 {
     srand(time(0)); // A function that generates random numbers with an initial seed of time 0
     unsigned int row , column ;
@@ -277,6 +282,7 @@ void positioning( vector <vector<Map_Components>>& map , int map_size )
         if (map[map_size - 1][i].name == "Spaceship")
         {
             in_it = true ;
+            spaceship_health = map[map_size - 1][i].Health ;
             break;
         }
     }
@@ -288,6 +294,8 @@ void positioning( vector <vector<Map_Components>>& map , int map_size )
         map[map_size - 1][(map_size - 1) / 2].size = 1 ;
         map[map_size - 1][(map_size - 1) / 2].color = "Bright_Green" ;
         map[map_size - 1][(map_size - 1) / 2].character = "[#]" ;
+
+        spaceship_health = map[map_size - 1][(map_size - 1) / 2].Health ;
     }
     int Enemy_Type ;
     bool Invalid_position = false ;
@@ -496,7 +504,7 @@ void Move_Spaceship( vector <vector<Map_Components>>& map , int map_size , int& 
     }
 }
 
-void Move_Enemy_Spaceship( vector <vector<Map_Components>>& map , int map_size )
+void Move_Enemy_Spaceship( vector <vector<Map_Components>>& map , int map_size , int &spaceship_health )
 {
     // In the following few lines, by scrolling the vector from the bottom to the top, we move the enemy ships down if possible
     for (int i = (map_size - 1) ; i >= 0 ; i--)
@@ -523,6 +531,7 @@ void Move_Enemy_Spaceship( vector <vector<Map_Components>>& map , int map_size )
                         }
                     }
                     map[i + 1][j].Health = map[i + 1][j].Health - 1 ; // In this line, we reduce one of the health of the spaceship
+                    spaceship_health = map[i + 1][j].Health ;
                 }
                 else if( (i + 1) < map_size )
                 {
@@ -632,4 +641,19 @@ void is_dead( vector <vector<Map_Components>>& map , int map_size )
             }
         }   
     }
+}
+
+void Show_information(int map_size , int quorum_point , int point , int spaceship_health )
+{
+    // In a few lines below we display the information of the game
+    cout << Yellow << "map size : " << map_size << "*" << map_size << Reset <<endl ;
+    cout << Green << "health : " << Reset ;
+    for (size_t i = 0; i < spaceship_health ; i++)
+    {
+        cout << Red << "*" << Reset ;
+    }
+    cout << endl ;
+    cout << Bright_Cyan << "Quorum of points : " << quorum_point << Reset << endl ;
+    cout << Bright_Blue << "point : " << point << Reset << endl ;
+    cout << Bright_Yellow_new << "Select 'ecs' to exit and save" << Reset << endl ;
 }
