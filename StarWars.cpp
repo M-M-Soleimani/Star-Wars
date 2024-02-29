@@ -54,6 +54,7 @@ void save(vector<vector<Map_Components>> map, int map_size, int quorum_point, do
 void Continue_Game();                                                                                                                                                                     // A function that loads the previously unfinished game file
 void Run_game_basic(vector<vector<Map_Components>> &map, int &map_size, int &quorum_point, double &point, int &spaceship_health, int &Spaceship_position, vector<string> &Enemies_history);     // A function that has the task of running the gameplay
 bool Enemy_is_in (vector<vector<Map_Components>> &map , int &map_size);     // A function that checks if there is an enemy in the map
+bool End_Game(int quorum_point , double point , int spaceship_health );
 
 int main()
 {
@@ -776,24 +777,24 @@ void Continue_Game()
 
 void Run_game_basic(vector<vector<Map_Components>> &map, int &map_size, int &quorum_point, double &point, int &spaceship_health, int &Spaceship_position, vector<string> &Enemies_history)
 {
-    while (true) // just for test
+    while (true && !End_Game(quorum_point , point , spaceship_health )) // just for test
     {
-        if (!Enemy_is_in(map , map_size))
-        {
-            positioning(map, map_size, spaceship_health, Enemies_history); // This function specifies the position of game elements
-        }
-        display(map, map_size);                                                                                               // This function displays the game map
-        Show_information(map_size, quorum_point, point, spaceship_health);                                                    // call the function that displays game information
-        if (Move_Spaceship(map, map_size, Spaceship_position, quorum_point, point, spaceship_health , Enemies_history) == "saved successfully") // call the Move_Spaceship function
-        {
-            cout << Bright_Green << "Game saved !" << Reset;
-            break;
-        }
-        Move_Enemy_Spaceship(map, map_size, spaceship_health, point, Enemies_history); // Calling a function to move enemy spaceships
-        is_dead(map, map_size);                                                        // Calling a function to check health of map map Components
-        Shoot(map, map_size, Spaceship_position);                                      // Calling a function to fire bullets
-        is_dead(map, map_size);                                                        // Calling a function to check health of map map Components
-        save(map, map_size, quorum_point, point, spaceship_health ,Enemies_history);   // Calling a function to save game data
+            if (!Enemy_is_in(map , map_size))
+            {
+                positioning(map, map_size, spaceship_health, Enemies_history); // This function specifies the position of game elements
+            }
+            display(map, map_size);                                                                                               // This function displays the game map
+            Show_information(map_size, quorum_point, point, spaceship_health);                                                    // call the function that displays game information
+            if (Move_Spaceship(map, map_size, Spaceship_position, quorum_point, point, spaceship_health , Enemies_history) == "saved successfully") // call the Move_Spaceship function
+            {
+                cout << Bright_Green << "Game saved !" << Reset;
+                break;
+            }
+            Move_Enemy_Spaceship(map, map_size, spaceship_health, point, Enemies_history); // Calling a function to move enemy spaceships
+            is_dead(map, map_size);                                                        // Calling a function to check health of map map Components
+            Shoot(map, map_size, Spaceship_position);                                      // Calling a function to fire bullets
+            is_dead(map, map_size);                                                        // Calling a function to check health of map map Components
+            save(map, map_size, quorum_point, point, spaceship_health ,Enemies_history);   // Calling a function to save game data
     }
 }
 
@@ -810,5 +811,21 @@ bool Enemy_is_in (vector<vector<Map_Components>> &map , int &map_size)
             }
         }
     }
+    return false ;
+}
+
+bool End_Game(int quorum_point , double point , int spaceship_health )
+{
+    if (spaceship_health <= 0)
+    {
+        cout << Bright_Red << "  _ " << endl <<" | | ___  ___  ___ " <<endl << " | |/ _ \\/ __|/ _ \\ " << endl <<" | | (_) \\__ \\  __/" << endl <<" |_|\\___/|___/\\___|" << Reset ;
+        return true ;
+    }
+    else if (point >= quorum_point)
+    {
+        cout << Bright_Green << "__    __ _  __  _" << endl <<"\\ \\/\\/ /| ||  \\| |" << endl <<" \\_/\\_/ |_||_|\\__|" << Reset;
+        return true;
+    }
+    else
     return false ;
 }
