@@ -53,6 +53,7 @@ void Show_information(int map_size, int quorum_point, double point, int spaceshi
 void save(vector<vector<Map_Components>> map, int map_size, int quorum_point, double point, int spaceship_health, vector<string> &Enemies_history);                                       // A function that is responsible for storing information in a file
 void Continue_Game();                                                                                                                                                                     // A function that loads the previously unfinished game file
 void Run_game_basic(vector<vector<Map_Components>> &map, int &map_size, int &quorum_point, double &point, int &spaceship_health, int &Spaceship_position, vector<string> &Enemies_history);     // A function that has the task of running the gameplay
+bool Enemy_is_in (vector<vector<Map_Components>> &map , int &map_size);     // A function that checks if there is an enemy in the map
 
 int main()
 {
@@ -197,7 +198,7 @@ void Initializer_Basic()
     int spaceship_health;
     int Spaceship_position;
     vector<string> Enemies_history;
-    positioning(map, map_size, spaceship_health, Enemies_history); // This function specifies the position of game elements
+    // positioning(map, map_size, spaceship_health, Enemies_history); // This function specifies the position of game elements
     Run_game_basic(map, map_size, quorum_point, point, spaceship_health, Spaceship_position, Enemies_history);    // Calling the run game function
 }
 
@@ -272,7 +273,7 @@ void positioning(vector<vector<Map_Components>> &map, int map_size, int &spacesh
     srand(time(0)); // A function that generates random numbers with an initial seed of time 0
     unsigned int row, column;
     bool in_it = false;
-    for (size_t i = 0; i < (map_size - 1); i++) // In these few lines, if there is no native ship, a ship will be created
+    for (size_t i = 0; i < map_size ; i++) // In these few lines, if there is no native ship, a ship will be created
     {
         if (map[map_size - 1][i].name == "Spaceship")
         {
@@ -777,6 +778,10 @@ void Run_game_basic(vector<vector<Map_Components>> &map, int &map_size, int &quo
 {
     while (true) // just for test
     {
+        if (!Enemy_is_in(map , map_size))
+        {
+            positioning(map, map_size, spaceship_health, Enemies_history); // This function specifies the position of game elements
+        }
         display(map, map_size);                                                                                               // This function displays the game map
         Show_information(map_size, quorum_point, point, spaceship_health);                                                    // call the function that displays game information
         if (Move_Spaceship(map, map_size, Spaceship_position, quorum_point, point, spaceship_health , Enemies_history) == "saved successfully") // call the Move_Spaceship function
@@ -790,4 +795,20 @@ void Run_game_basic(vector<vector<Map_Components>> &map, int &map_size, int &quo
         is_dead(map, map_size);                                                        // Calling a function to check health of map map Components
         save(map, map_size, quorum_point, point, spaceship_health ,Enemies_history);   // Calling a function to save game data
     }
+}
+
+bool Enemy_is_in (vector<vector<Map_Components>> &map , int &map_size)
+{
+    // In the following few lines, we navigate the map, if there is an enemy, it returns the true value
+    for (size_t i = 0; i < map_size ; i++)
+    {
+        for (size_t j = 0; j < map_size; j++)
+        {
+            if (map[i][j].name == "Dart" || map[i][j].name == "Striker" || map[i][j].name == "Wraith" || map[i][j].name == "Banshee")
+            {
+                return true ;
+            }
+        }
+    }
+    return false ;
 }
