@@ -51,7 +51,7 @@ void Move_Enemy_Spaceship( vector <vector<Map_Components>>& map , int map_size ,
 void Shoot( vector <vector<Map_Components>>& map , int map_size , int& Spaceship_position );    // A function to fire bullets
 void is_dead( vector <vector<Map_Components>>& map , int map_size );    // This function is responsible for checking the existence of a map component
 void Show_information(int map_size , int quorum_point , int point , int spaceship_health ); // This function displays game information
-void save(vector <vector<Map_Components>> map , int map_size , int quorum_point , int point , int spaceship_health );
+void save(vector <vector<Map_Components>> map , int map_size , int quorum_point , int point , int spaceship_health );   // A function that is responsible for storing information in a file
 
 int main()
 {
@@ -203,11 +203,14 @@ void Initializer_Basic()
         Show_information(map_size , quorum_point , point , spaceship_health );  // call the function that displays game information
         if (Move_Spaceship( map , map_size , Spaceship_position , quorum_point , point , spaceship_health)== "saved successfully")    // call the Move_Spaceship function
         {
+            cout << Bright_Green << "Game saved !" << Reset ;
             break;
         }
         Move_Enemy_Spaceship( map , map_size , spaceship_health); // Calling a function to move enemy spaceships
+        is_dead( map , map_size ); // Calling a function to check health of map map Components
         Shoot( map , map_size , Spaceship_position );   // Calling a function to fire bullets
         is_dead( map , map_size ); // Calling a function to check health of map map Components
+        save(map , map_size , quorum_point , point , spaceship_health );    // Calling a function to save game data
     }
 }
 
@@ -690,8 +693,8 @@ void Show_information(int map_size , int quorum_point , int point , int spaceshi
 
 void save(vector <vector<Map_Components>> map , int map_size , int quorum_point , int point , int spaceship_health )
 {
-    ofstream out("game.txt" , ios :: out | ios :: app );
-    out << "new game" << endl ;
+    ofstream out("game.txt" , ios :: out ); // We create an output stream with the name "out"
+    // In the following few lines, we save the game information in the file
     out << map_size << endl ;
     out << quorum_point << endl ;
     out << point << endl ;
@@ -702,10 +705,10 @@ void save(vector <vector<Map_Components>> map , int map_size , int quorum_point 
         {
             if (map[i][j].name != "empty" )
             {
-                out << map[i][j].name << " " << i << " " << j << endl ;
+                out << map[i][j].name << " " << i << " " << j << " " << map[i][j].Health << endl ;
             }
         }
     }
     system("cls || clear");  // This function clears the console
-    cout << Bright_Green << "Game saved !" << Reset ;
+    out.close();
 }
