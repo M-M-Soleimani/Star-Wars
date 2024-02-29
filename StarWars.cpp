@@ -52,6 +52,7 @@ void Shoot( vector <vector<Map_Components>>& map , int map_size , int& Spaceship
 void is_dead( vector <vector<Map_Components>>& map , int map_size );    // This function is responsible for checking the existence of a map component
 void Show_information(int map_size , int quorum_point , int point , int spaceship_health ); // This function displays game information
 void save(vector <vector<Map_Components>> map , int map_size , int quorum_point , int point , int spaceship_health );   // A function that is responsible for storing information in a file
+void Continue_Game();   // A function that loads the previously unfinished game file
 
 int main()
 {
@@ -91,7 +92,7 @@ bool Menu()
             break;
 
         case '2':
-            /*code*/
+            Continue_Game();
             return true;
             break;
 
@@ -705,10 +706,37 @@ void save(vector <vector<Map_Components>> map , int map_size , int quorum_point 
         {
             if (map[i][j].name != "empty" )
             {
-                out << map[i][j].name << " " << i << " " << j << " " << map[i][j].Health << endl ;
+                out << i << " " << j << " " << map[i][j].name << " " << map[i][j].Health << endl ;
             }
         }
     }
     system("cls || clear");  // This function clears the console
     out.close();
+}
+
+void Continue_Game()
+{
+    vector <vector<Map_Components>> map ;
+    int map_size , quorum_point , point , spaceship_health ;
+    int i , j ;
+    ifstream in ;   // We create an input stream with the name "in"
+    in.open("game.txt");
+    // In the following few lines, we read the game information from the file
+    if (!in.is_open())  // If there is no appropriate error file, it will be displayed
+    {
+        cerr << Red << "Error opening file !" << Reset << endl ;
+        Sleep(800);
+    }
+    else
+    {
+        in >> map_size 
+           >> quorum_point
+           >> point
+           >> spaceship_health ;
+        map.resize( map_size , vector<Map_Components> (map_size) ); // Creates a two-dimensional vector with the dimensions of map size * map size
+        while (in >> i >> j >> map[i][j].name >> map[i][j].Health ) // Read them as long as there is information in the file
+        {
+
+        }
+    }
 }
