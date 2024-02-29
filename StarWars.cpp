@@ -53,6 +53,7 @@ void is_dead( vector <vector<Map_Components>>& map , int map_size );    // This 
 void Show_information(int map_size , int quorum_point , int point , int spaceship_health ); // This function displays game information
 void save(vector <vector<Map_Components>> map , int map_size , int quorum_point , int point , int spaceship_health );   // A function that is responsible for storing information in a file
 void Continue_Game();   // A function that loads the previously unfinished game file
+void Run_game(vector <vector<Map_Components>>& map , int &map_size , int &quorum_point , int &point , int &spaceship_health , int& Spaceship_position);
 
 int main()
 {
@@ -194,25 +195,11 @@ void Initializer_Basic()
     cout << "Enter the quorum for the win : ";  // In these few lines, a quorum of points to win is received from the user
     int quorum_point;
     cin >> quorum_point;
-    int Spaceship_position ;
     int point = 0 ;
     int spaceship_health ;
+    int Spaceship_position ;
     positioning( map , map_size , spaceship_health);  // This function specifies the position of game elements
-    while (true)    // just for test
-    {
-        display( map , map_size );  // This function displays the game map
-        Show_information(map_size , quorum_point , point , spaceship_health );  // call the function that displays game information
-        if (Move_Spaceship( map , map_size , Spaceship_position , quorum_point , point , spaceship_health)== "saved successfully")    // call the Move_Spaceship function
-        {
-            cout << Bright_Green << "Game saved !" << Reset ;
-            break;
-        }
-        Move_Enemy_Spaceship( map , map_size , spaceship_health); // Calling a function to move enemy spaceships
-        is_dead( map , map_size ); // Calling a function to check health of map map Components
-        Shoot( map , map_size , Spaceship_position );   // Calling a function to fire bullets
-        is_dead( map , map_size ); // Calling a function to check health of map map Components
-        save(map , map_size , quorum_point , point , spaceship_health );    // Calling a function to save game data
-    }
+    Run_game( map , map_size , quorum_point , point , spaceship_health , Spaceship_position);
 }
 
 void Initializer_Advanced()
@@ -508,7 +495,7 @@ string Move_Spaceship( vector <vector<Map_Components>>& map , int map_size , int
         return "The move was successful" ;
         break;
     
-    case 115 :
+    case 27 :
         save(map , map_size , quorum_point , point , spaceship_health );
         return "saved successfully" ;
         break;
@@ -706,7 +693,7 @@ void save(vector <vector<Map_Components>> map , int map_size , int quorum_point 
         {
             if (map[i][j].name != "empty" )
             {
-                out << i << " " << j << " " << map[i][j].name << " " << map[i][j].Health << endl ;
+                out << i << " " << j << " " << map[i][j].name << " " << map[i][j].Health << " " << map[i][j].character << " " << map[i][j].color << " " << map[i][j].damage << " " << map[i][j].size << endl ;
             }
         }
     }
@@ -719,6 +706,7 @@ void Continue_Game()
     vector <vector<Map_Components>> map ;
     int map_size , quorum_point , point , spaceship_health ;
     int i , j ;
+    int Spaceship_position ;
     ifstream in ;   // We create an input stream with the name "in"
     in.open("game.txt");
     // In the following few lines, we read the game information from the file
@@ -734,9 +722,34 @@ void Continue_Game()
            >> point
            >> spaceship_health ;
         map.resize( map_size , vector<Map_Components> (map_size) ); // Creates a two-dimensional vector with the dimensions of map size * map size
-        while (in >> i >> j >> map[i][j].name >> map[i][j].Health ) // Read them as long as there is information in the file
+        while (in >> i >> j >> map[i][j].name >> map[i][j].Health >> map[i][j].character >> map[i][j].color >> map[i][j].damage >> map[i][j].size ) // Read them as long as there is information in the file
         {
-
+            if (map[i][j].name == "Spaceship")
+            {
+               Spaceship_position = j ; 
+            }
+            
         }
+    
+        Run_game( map , map_size , quorum_point , point , spaceship_health , Spaceship_position);
+    }
+}
+
+void Run_game(vector <vector<Map_Components>>& map , int &map_size , int &quorum_point , int &point , int &spaceship_health , int& Spaceship_position)
+{
+    while (true)    // just for test
+    {
+        display( map , map_size );  // This function displays the game map
+        Show_information(map_size , quorum_point , point , spaceship_health );  // call the function that displays game information
+        if (Move_Spaceship( map , map_size , Spaceship_position , quorum_point , point , spaceship_health)== "saved successfully")    // call the Move_Spaceship function
+        {
+            cout << Bright_Green << "Game saved !" << Reset ;
+            break;
+        }
+        Move_Enemy_Spaceship( map , map_size , spaceship_health); // Calling a function to move enemy spaceships
+        is_dead( map , map_size ); // Calling a function to check health of map map Components
+        Shoot( map , map_size , Spaceship_position );   // Calling a function to fire bullets
+        is_dead( map , map_size ); // Calling a function to check health of map map Components
+        save(map , map_size , quorum_point , point , spaceship_health );    // Calling a function to save game data
     }
 }
