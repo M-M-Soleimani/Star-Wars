@@ -78,11 +78,9 @@ bool Menu()
         // In the next few lines, the menu will be displayed on the console
         cout << "1- Game Mode " << endl
              << "2- Continue Game " << endl
-             << "3- Change SpacShip Character " << endl
-             << "4- Save Game" << endl
-             << "5- Description of SpaceShips " << endl
-             << "6- History" << endl
-             << "7- Exit " << endl;
+             << "3- Description of SpaceShips " << endl
+             << "4- History" << endl
+             << "5- Exit " << endl;
         char user_selection;
         user_selection = getch(); // We get an option chosen by the user
         switch (user_selection)
@@ -107,21 +105,11 @@ bool Menu()
             break;
 
         case '4':
-            /*code*/
-            return true;
-            break;
-
-        case '5':
-            /*code*/
-            return true;
-            break;
-
-        case '6':
             display_History();
             return true;
             break;
 
-        case '7':
+        case '5':
             /*code*/
             return false;
             break;
@@ -511,6 +499,9 @@ string Move_Spaceship(vector<vector<Map_Components>> &map, int map_size, int &Sp
             Sleep(200);                                       // This function freezes the console for 200 milliseconds
         }
         return "The move was successful";
+        break;
+
+    case 115 :
         break;
 
     case 27:
