@@ -6,7 +6,7 @@
 #include <time.h>
 #include <stdlib.h>
 #include <fstream>
-//#include<ncurses>
+// #include<ncurses>
 
 // Defining color codes to beautify the game
 #define Black "\u001b[30m"
@@ -36,31 +36,32 @@ struct Map_Components // A data structure for the components in the game map wit
     int Health = 0;
     int damage = 0;
     int size = 1 * 1;
-    string color = "Bright_cyan";
+    string color = "White";
     string character = "[ ]";
 };
 
-bool Menu();                                                                                                                                                                                // function that displays the menu to the user
-bool Game_Mode();                                                                                                                                                                           // function that allows the user to choose between two types of games
-void Initializer_Basic();                                                                                                                                                                   // function for game preparation and initialization for Basic Mode
-void Initializer_Advanced();                                                                                                                                                                // function for game preparation and initialization for Advanced Mode
-void positioning(vector<vector<Map_Components>> &map, int map_size, int &spaceship_health, vector<string> &Enemies_history);                                                                // function that determines the position of elements in the map
-void display(vector<vector<Map_Components>> map, int map_size);                                                                                                                             // This function displays the game map
-string Move_Spaceship(vector<vector<Map_Components>> &map, int map_size, int &Spaceship_position, int quorum_point, double point, int spaceship_health, vector<string> &Enemies_history , int& level , int spaceship_type);   // This function moves the spaceship left and right
-void Move_Enemy_Spaceship(vector<vector<Map_Components>> &map, int map_size, int &spaceship_health, double &point, vector<string> &Enemies_history , int spaceship_type);                                        // A function to move enemy spaceships
-void Shoot(vector<vector<Map_Components>> &map, int map_size, int &Spaceship_position , int spaceship_type);                                                                                                     // A function to fire bullets
-void is_dead(vector<vector<Map_Components>> &map, int map_size);                                                                                                                            // This function is responsible for checking the existence of a map component
-void Show_information(int map_size, int quorum_point, double point, int spaceship_health);                                                                                                  // This function displays game information
-void save(vector<vector<Map_Components>> map, int map_size, int quorum_point, double point, int spaceship_health, vector<string> &Enemies_history , int level , int spaceship_type);                                         // A function that is responsible for storing information in a file
-void Continue_Game();                                                                                                                                                                       // A function that loads the previously unfinished game file
-void Run_game_basic(vector<vector<Map_Components>> &map, int &map_size, int &quorum_point, double &point, int &spaceship_health, int &Spaceship_position, vector<string> &Enemies_history , int& level , int spaceship_type); // A function that has the task of running the gameplay
-bool Enemy_is_in(vector<vector<Map_Components>> &map, int &map_size);                                                                                                                       // A function that checks if there is an enemy in the map
-bool End_Game(int quorum_point, double point, int spaceship_health , vector<string> &Enemies_history , int level ); // This function checks if the game has been completed or not and displays the killed enemies
-void user_level(int point , int& level);
-void Run_game_Advanced(vector<vector<Map_Components>> &map, int &map_size, int &quorum_point, double &point, int &spaceship_health, int &Spaceship_position, vector<string> &Enemies_history , int& level , int spaceship_type );
-void positioning_Advanced(vector<vector<Map_Components>> &map, int map_size, int &spaceship_health, vector<string> &Enemies_history , int level);
-void Save_History(int level , double point , int spaceship_health , int quorum_point );
+bool Menu();                                                                                                                                                                                                                // function that displays the menu to the user
+bool Game_Mode();                                                                                                                                                                                                           // function that allows the user to choose between two types of games
+void Initializer_Basic();                                                                                                                                                                                                   // function for game preparation and initialization for Basic Mode
+void Initializer_Advanced();                                                                                                                                                                                                // function for game preparation and initialization for Advanced Mode
+void positioning(vector<vector<Map_Components>> &map, int map_size, int &spaceship_health, vector<string> &Enemies_history);                                                                                                // function that determines the position of elements in the map
+void display(vector<vector<Map_Components>> map, int map_size);                                                                                                                                                             // This function displays the game map
+string Move_Spaceship(vector<vector<Map_Components>> &map, int map_size, int &Spaceship_position, int quorum_point, double point, int spaceship_health, vector<string> &Enemies_history, int &level, int spaceship_type);   // This function moves the spaceship left and right
+void Move_Enemy_Spaceship(vector<vector<Map_Components>> &map, int map_size, int &spaceship_health, double &point, vector<string> &Enemies_history, int spaceship_type);                                                    // A function to move enemy spaceships
+void Shoot(vector<vector<Map_Components>> &map, int map_size, int &Spaceship_position, int spaceship_type);                                                                                                                 // A function to fire bullets
+void is_dead(vector<vector<Map_Components>> &map, int map_size);                                                                                                                                                            // This function is responsible for checking the existence of a map component
+void Show_information(int map_size, int quorum_point, double point, int spaceship_health);                                                                                                                                  // This function displays game information
+void save(vector<vector<Map_Components>> map, int map_size, int quorum_point, double point, int spaceship_health, vector<string> &Enemies_history, int level, int spaceship_type);                                          // A function that is responsible for storing information in a file
+void Continue_Game();                                                                                                                                                                                                       // A function that loads the previously unfinished game file
+void Run_game_basic(vector<vector<Map_Components>> &map, int &map_size, int &quorum_point, double &point, int &spaceship_health, int &Spaceship_position, vector<string> &Enemies_history, int &level, int spaceship_type); // A function that has the task of running the gameplay
+bool Enemy_is_in(vector<vector<Map_Components>> &map, int &map_size);                                                                                                                                                       // A function that checks if there is an enemy in the map
+bool End_Game(int quorum_point, double point, int spaceship_health, vector<string> &Enemies_history, int level);                                                                                                            // This function checks if the game has been completed or not and displays the killed enemies
+void user_level(int point, int &level);
+void Run_game_Advanced(vector<vector<Map_Components>> &map, int &map_size, int &quorum_point, double &point, int &spaceship_health, int &Spaceship_position, vector<string> &Enemies_history, int &level, int spaceship_type);
+void positioning_Advanced(vector<vector<Map_Components>> &map, int map_size, int &spaceship_health, vector<string> &Enemies_history, int level);
+void Save_History(int level, double point, int spaceship_health, int quorum_point);
 void display_History();
+void SpaceShips_Description();
 int main()
 {
     while (Menu())
@@ -101,7 +102,7 @@ bool Menu()
             break;
 
         case '3':
-            /*code*/
+            SpaceShips_Description();
             return true;
             break;
 
@@ -191,10 +192,10 @@ void Initializer_Basic()
     double point = 0;
     int spaceship_health;
     int Spaceship_position;
-    int level ;
-    int Spaceship_type ;
+    int level;
+    int Spaceship_type;
     vector<string> Enemies_history;
-    Run_game_basic(map, map_size, quorum_point, point, spaceship_health, Spaceship_position, Enemies_history , level , Spaceship_type); // Calling the run game function
+    Run_game_basic(map, map_size, quorum_point, point, spaceship_health, Spaceship_position, Enemies_history, level, Spaceship_type); // Calling the run game function
 }
 
 void Initializer_Advanced()
@@ -220,7 +221,7 @@ void Initializer_Advanced()
     cout << "Enter the quorum for the win : "; // In these few lines, a quorum of points to win is received from the user
     int quorum_point;
     cin >> quorum_point;
-    int spaceship_type ;
+    int spaceship_type;
     Invalid_Selection = false;
     do
     {
@@ -230,22 +231,22 @@ void Initializer_Advanced()
              << "1- spaceship 1" << endl
              << "2- spaceship 2" << endl
              << "3- spaceship 3" << endl;
-        spaceship_type = getch() - 48 ;
+        spaceship_type = getch() - 48;
         switch (spaceship_type)
         {
-        case 1 :
+        case 1:
             system("cls || clear"); // This function clears the console
             cout << "Select the type of spaceship : spaceship 1 " << endl;
             Spaceship_Type_name = "spaceship 1"; // In this line, we assign the name of a type of spaceship to a string variable to be used in subsequent functions.
             break;
 
-        case 2 :
+        case 2:
             system("cls || clear"); // This function clears the console
             cout << "Select the type of spaceship : spaceship 2 " << endl;
             Spaceship_Type_name = "spaceship 2"; // In this line, we assign the name of a type of spaceship to a string variable to be used in subsequent functions.
             break;
 
-        case 3 :
+        case 3:
             system("cls || clear"); // This function clears the console
             cout << "Select the type of spaceship : spaceship 3 " << endl;
             Spaceship_Type_name = "spaceship 3"; // In this line, we assign the name of a type of spaceship to a string variable to be used in subsequent functions.
@@ -263,9 +264,9 @@ void Initializer_Advanced()
     double point = 0;
     int spaceship_health;
     int Spaceship_position;
-    int level ;
+    int level;
     vector<string> Enemies_history;
-    Run_game_Advanced(map, map_size, quorum_point, point, spaceship_health, Spaceship_position, Enemies_history , level , spaceship_type ); // Calling the run game function
+    Run_game_Advanced(map, map_size, quorum_point, point, spaceship_health, Spaceship_position, Enemies_history, level, spaceship_type); // Calling the run game function
 }
 
 void positioning(vector<vector<Map_Components>> &map, int map_size, int &spaceship_health, vector<string> &Enemies_history)
@@ -435,7 +436,7 @@ void display(vector<vector<Map_Components>> map, int map_size)
     }
 }
 
-string Move_Spaceship(vector<vector<Map_Components>> &map, int map_size, int &Spaceship_position, int quorum_point, double point, int spaceship_health, vector<string> &Enemies_history , int& level , int spaceship_type)
+string Move_Spaceship(vector<vector<Map_Components>> &map, int map_size, int &Spaceship_position, int quorum_point, double point, int spaceship_health, vector<string> &Enemies_history, int &level, int spaceship_type)
 {
     int User_Selection;
     User_Selection = getch();
@@ -502,12 +503,12 @@ string Move_Spaceship(vector<vector<Map_Components>> &map, int map_size, int &Sp
         return "The move was successful";
         break;
 
-    case 115 :
+    case 115:
         break;
 
     case 27:
-        save(map, map_size, quorum_point, point, spaceship_health, Enemies_history , level , spaceship_type);
-        Save_History( level , point , spaceship_health , quorum_point );
+        save(map, map_size, quorum_point, point, spaceship_health, Enemies_history, level, spaceship_type);
+        Save_History(level, point, spaceship_health, quorum_point);
         return "saved successfully";
         break;
 
@@ -520,8 +521,8 @@ string Move_Spaceship(vector<vector<Map_Components>> &map, int map_size, int &Sp
             user_slection = getch();
             if (user_slection == 115)
             {
-                save(map, map_size, quorum_point, point, spaceship_health, Enemies_history , level , spaceship_type);
-                Save_History( level , point , spaceship_health , quorum_point );
+                save(map, map_size, quorum_point, point, spaceship_health, Enemies_history, level, spaceship_type);
+                Save_History(level, point, spaceship_health, quorum_point);
                 return "saved successfully";
                 break;
             }
@@ -536,7 +537,7 @@ string Move_Spaceship(vector<vector<Map_Components>> &map, int map_size, int &Sp
     return "The move was successful";
 }
 
-void Move_Enemy_Spaceship(vector<vector<Map_Components>> &map, int map_size, int &spaceship_health, double &point, vector<string> &Enemies_history , int spaceship_type)
+void Move_Enemy_Spaceship(vector<vector<Map_Components>> &map, int map_size, int &spaceship_health, double &point, vector<string> &Enemies_history, int spaceship_type)
 {
     // In the following few lines, by scrolling the vector from the bottom to the top, we move the enemy ships down if possible
     for (int i = (map_size - 1); i >= 0; i--)
@@ -577,7 +578,7 @@ void Move_Enemy_Spaceship(vector<vector<Map_Components>> &map, int map_size, int
                             {
                                 if (map[z][k].name == "Dart" || map[z][k].name == "Striker" || map[z][k].name == "Wraith" || map[z][k].name == "Banshee")
                                 {
-                                    map[z][k].Health = map[z][k].Health - (spaceship_type*2) ;
+                                    map[z][k].Health = map[z][k].Health - (spaceship_type * 2);
                                     is_hit = true;
                                 }
                             }
@@ -632,7 +633,7 @@ void Move_Enemy_Spaceship(vector<vector<Map_Components>> &map, int map_size, int
     }
 }
 
-void Shoot(vector<vector<Map_Components>> &map, int map_size, int &Spaceship_position , int spaceship_type)
+void Shoot(vector<vector<Map_Components>> &map, int map_size, int &Spaceship_position, int spaceship_type)
 {
     for (size_t i = 0; i < map_size; i++) // In the following few lines, if there is a bullet, and if possible, we move the bullet up
     {
@@ -671,7 +672,7 @@ void Shoot(vector<vector<Map_Components>> &map, int map_size, int &Spaceship_pos
     // We create a bullet in a few lines below
     map[map_size - 2][Spaceship_position].name = "bullet";
     map[map_size - 2][Spaceship_position].Health = 0;
-    map[map_size - 2][Spaceship_position].damage = spaceship_type ;
+    map[map_size - 2][Spaceship_position].damage = spaceship_type;
     map[map_size - 2][Spaceship_position].size = 1;
     map[map_size - 2][Spaceship_position].color = "Bright_Red";
     map[map_size - 2][Spaceship_position].character = "[^]";
@@ -697,7 +698,7 @@ void is_dead(vector<vector<Map_Components>> &map, int map_size)
     }
 }
 
-void Show_information(int map_size, int quorum_point, double point, int spaceship_health , int level)
+void Show_information(int map_size, int quorum_point, double point, int spaceship_health, int level)
 {
     // In a few lines below we display the information of the game
     cout << Yellow << "map size : " << map_size << "*" << map_size << Reset << endl;
@@ -709,12 +710,12 @@ void Show_information(int map_size, int quorum_point, double point, int spaceshi
     cout << endl;
     cout << Bright_Cyan << "Quorum of points : " << quorum_point << Reset << endl;
     cout << Bright_Blue << "point : " << point << Reset << endl;
-    cout << Bright_Yellow << "level : " << level << Reset << endl ;
+    cout << Bright_Yellow << "level : " << level << Reset << endl;
     cout << Bright_Yellow_new << "Select 'ecs' to exit and save" << Reset << endl;
     cout << Bright_Yellow_new << "Press space to pause the game" << Reset << endl;
 }
 
-void save(vector<vector<Map_Components>> map, int map_size, int quorum_point, double point, int spaceship_health, vector<string> &Enemies_history , int level , int spaceship_type)
+void save(vector<vector<Map_Components>> map, int map_size, int quorum_point, double point, int spaceship_health, vector<string> &Enemies_history, int level, int spaceship_type)
 {
     ofstream out("game.txt", ios ::out); // We create an output stream with the name "out"
     // In the following few lines, we save the game information in the file
@@ -722,8 +723,8 @@ void save(vector<vector<Map_Components>> map, int map_size, int quorum_point, do
     out << quorum_point << endl;
     out << point << endl;
     out << spaceship_health << endl;
-    out << level << endl ;
-    out << spaceship_type << endl ;
+    out << level << endl;
+    out << spaceship_type << endl;
     out << Enemies_history.size() << endl;
     for (size_t i = 0; i < Enemies_history.size(); i++)
     {
@@ -750,9 +751,9 @@ void Continue_Game()
     int map_size, quorum_point, spaceship_health;
     int i, j;
     double point;
-    int level ;
+    int level;
     int Spaceship_position;
-    int spaceship_type ;
+    int spaceship_type;
     ifstream in; // We create an input stream with the name "in"
     in.open("game.txt");
     if (!in.is_open()) // If there is no appropriate error file, it will be displayed
@@ -764,8 +765,8 @@ void Continue_Game()
     {
         in >> map_size >> quorum_point >> point >> spaceship_health;
         int Enemies_history_size;
-        in >> level ;
-        in >> spaceship_type ;
+        in >> level;
+        in >> spaceship_type;
         in >> Enemies_history_size;
         vector<string> Enemies_history;
         Enemies_history.resize(Enemies_history_size);
@@ -786,35 +787,35 @@ void Continue_Game()
             cerr << Red << "You can not continue the game that has ended !" << Reset << endl;
             Sleep(1000);
         }
-        else 
+        else
         {
-            Run_game_basic(map, map_size, quorum_point, point, spaceship_health, Spaceship_position, Enemies_history , level , spaceship_type); // Calling the run game function
+            Run_game_basic(map, map_size, quorum_point, point, spaceship_health, Spaceship_position, Enemies_history, level, spaceship_type); // Calling the run game function
         }
         in.close();
     }
 }
 
-void Run_game_basic(vector<vector<Map_Components>> &map, int &map_size, int &quorum_point, double &point, int &spaceship_health, int &Spaceship_position, vector<string> &Enemies_history , int& level , int spaceship_type)
+void Run_game_basic(vector<vector<Map_Components>> &map, int &map_size, int &quorum_point, double &point, int &spaceship_health, int &Spaceship_position, vector<string> &Enemies_history, int &level, int spaceship_type)
 {
-    while (true && !End_Game(quorum_point, point, spaceship_health ,Enemies_history , level )) // just for test
+    while (true && !End_Game(quorum_point, point, spaceship_health, Enemies_history, level)) // just for test
     {
         if (!Enemy_is_in(map, map_size))
         {
             positioning(map, map_size, spaceship_health, Enemies_history); // This function specifies the position of game elements
         }
-        display(map, map_size);                                                                                                                // This function displays the game map
-        Show_information(map_size, quorum_point, point, spaceship_health , level);                                                                     // call the function that displays game information
-        if (Move_Spaceship(map, map_size, Spaceship_position, quorum_point, point, spaceship_health, Enemies_history , level , spaceship_type) == "saved successfully") // call the Move_Spaceship function
+        display(map, map_size);                                                                                                                                       // This function displays the game map
+        Show_information(map_size, quorum_point, point, spaceship_health, level);                                                                                     // call the function that displays game information
+        if (Move_Spaceship(map, map_size, Spaceship_position, quorum_point, point, spaceship_health, Enemies_history, level, spaceship_type) == "saved successfully") // call the Move_Spaceship function
         {
             cout << Bright_Green << "Game saved !" << Reset;
             break;
         }
-        Move_Enemy_Spaceship(map, map_size, spaceship_health, point, Enemies_history , spaceship_type ); // Calling a function to move enemy spaceships
-        is_dead(map, map_size);                                                        // Calling a function to check health of map map Components
-        Shoot(map, map_size, Spaceship_position , spaceship_type);                                      // Calling a function to fire bullets
-        is_dead(map, map_size);                                                        // Calling a function to check health of map map Components
-        user_level(point , level);
-        save(map, map_size, quorum_point, point, spaceship_health, Enemies_history , level , spaceship_type);   // Calling a function to save game data
+        Move_Enemy_Spaceship(map, map_size, spaceship_health, point, Enemies_history, spaceship_type); // Calling a function to move enemy spaceships
+        is_dead(map, map_size);                                                                        // Calling a function to check health of map map Components
+        Shoot(map, map_size, Spaceship_position, spaceship_type);                                      // Calling a function to fire bullets
+        is_dead(map, map_size);                                                                        // Calling a function to check health of map map Components
+        user_level(point, level);
+        save(map, map_size, quorum_point, point, spaceship_health, Enemies_history, level, spaceship_type); // Calling a function to save game data
     }
 }
 
@@ -834,11 +835,11 @@ bool Enemy_is_in(vector<vector<Map_Components>> &map, int &map_size)
     return false;
 }
 
-bool End_Game(int quorum_point, double point, int spaceship_health , vector<string> &Enemies_history , int level )
+bool End_Game(int quorum_point, double point, int spaceship_health, vector<string> &Enemies_history, int level)
 {
     // In the following few lines, the number of enemies killed by type is specified
-    int Dart_counter = 0 , Striker_counter = 0 , Wraith_counter = 0 , Banshee_counter = 0 ;
-    for (auto &Enemie_type : Enemies_history )
+    int Dart_counter = 0, Striker_counter = 0, Wraith_counter = 0, Banshee_counter = 0;
+    for (auto &Enemie_type : Enemies_history)
     {
         if (Enemie_type == "Dart")
         {
@@ -857,7 +858,7 @@ bool End_Game(int quorum_point, double point, int spaceship_health , vector<stri
             Banshee_counter++;
         }
     }
-    
+
     static bool infinite_mode = false;
     if (infinite_mode && spaceship_health > 0)
     {
@@ -869,35 +870,46 @@ bool End_Game(int quorum_point, double point, int spaceship_health , vector<stri
              << " | | ___  ___  ___ " << endl
              << " | |/ _ \\/ __|/ _ \\ " << endl
              << " | | (_) \\__ \\  __/" << endl
-             << " |_|\\___/|___/\\___|" << Reset << endl ;
+             << " |_|\\___/|___/\\___|" << Reset << endl;
 
-        cout << Bright_Yellow_new << "List of enemies you have fought with:" << endl << Reset
-             << Bright_Cyan << "Dart : " << Dart_counter << endl << Reset
-             << Bright_Blue << "Striker : " << Striker_counter << endl << Reset
-             << Blue << "Wraith : " << Wraith_counter << endl << Reset
-             << Magenta << "Banshee : " << Banshee_counter << endl << Reset ;
-        Save_History( level , point , spaceship_health , quorum_point );
+        cout << Bright_Yellow_new << "List of enemies you have fought with:" << endl
+             << Reset
+             << Bright_Cyan << "Dart : " << Dart_counter << endl
+             << Reset
+             << Bright_Blue << "Striker : " << Striker_counter << endl
+             << Reset
+             << Blue << "Wraith : " << Wraith_counter << endl
+             << Reset
+             << Magenta << "Banshee : " << Banshee_counter << endl
+             << Reset;
+        Save_History(level, point, spaceship_health, quorum_point);
         return true;
     }
     else if (point >= quorum_point)
     {
-        cout << Bright_Green 
+        cout << Bright_Green
              << "__    __ _  __  _" << endl
              << "\\ \\/\\/ /| ||  \\| |" << endl
              << " \\_/\\_/ |_||_|\\__|" << Reset << endl;
-        cout << Bright_Yellow_new << "If you want to continue playing without restrictions, press y (press any key to finish):" << endl << Reset;
+        cout << Bright_Yellow_new << "If you want to continue playing without restrictions, press y (press any key to finish):" << endl
+             << Reset;
         if (getch() == 121)
         {
             infinite_mode = true;
         }
         else
         {
-            cout << Bright_Yellow_new << "List of enemies you have fought with:" << endl << Reset
-             << Bright_Cyan << "Dart : " << Dart_counter << endl << Reset
-             << Bright_Blue << "Striker : " << Striker_counter << endl << Reset
-             << Blue << "Wraith : " << Wraith_counter << endl << Reset
-             << Magenta << "Banshee : " << Banshee_counter << endl << Reset ;
-        Save_History( level , point , spaceship_health , quorum_point );
+            cout << Bright_Yellow_new << "List of enemies you have fought with:" << endl
+                 << Reset
+                 << Bright_Cyan << "Dart : " << Dart_counter << endl
+                 << Reset
+                 << Bright_Blue << "Striker : " << Striker_counter << endl
+                 << Reset
+                 << Blue << "Wraith : " << Wraith_counter << endl
+                 << Reset
+                 << Magenta << "Banshee : " << Banshee_counter << endl
+                 << Reset;
+            Save_History(level, point, spaceship_health, quorum_point);
             return true;
         }
     }
@@ -908,36 +920,36 @@ bool End_Game(int quorum_point, double point, int spaceship_health , vector<stri
     return false;
 }
 
-void user_level(int point , int& level)
+void user_level(int point, int &level)
 {
-    level = point / 200 ;
+    level = point / 200;
 }
 
-void Run_game_Advanced(vector<vector<Map_Components>> &map, int &map_size, int &quorum_point, double &point, int &spaceship_health, int &Spaceship_position, vector<string> &Enemies_history , int& level , int spaceship_type )
+void Run_game_Advanced(vector<vector<Map_Components>> &map, int &map_size, int &quorum_point, double &point, int &spaceship_health, int &Spaceship_position, vector<string> &Enemies_history, int &level, int spaceship_type)
 {
-    while (true && !End_Game(quorum_point, point, spaceship_health ,Enemies_history , level )) // just for test
+    while (true && !End_Game(quorum_point, point, spaceship_health, Enemies_history, level)) // just for test
     {
         if (!Enemy_is_in(map, map_size))
         {
-            positioning_Advanced(map, map_size, spaceship_health, Enemies_history , level); // This function specifies the position of game elements
+            positioning_Advanced(map, map_size, spaceship_health, Enemies_history, level); // This function specifies the position of game elements
         }
-        display(map, map_size);                                                                                                                // This function displays the game map
-        Show_information(map_size, quorum_point, point, spaceship_health , level);                                                                     // call the function that displays game information
-        if (Move_Spaceship(map, map_size, Spaceship_position, quorum_point, point, spaceship_health, Enemies_history , level , spaceship_type) == "saved successfully") // call the Move_Spaceship function
+        display(map, map_size);                                                                                                                                       // This function displays the game map
+        Show_information(map_size, quorum_point, point, spaceship_health, level);                                                                                     // call the function that displays game information
+        if (Move_Spaceship(map, map_size, Spaceship_position, quorum_point, point, spaceship_health, Enemies_history, level, spaceship_type) == "saved successfully") // call the Move_Spaceship function
         {
             cout << Bright_Green << "Game saved !" << Reset;
             break;
         }
-        Move_Enemy_Spaceship(map, map_size, spaceship_health, point, Enemies_history , spaceship_type); // Calling a function to move enemy spaceships
-        is_dead(map, map_size);                                                        // Calling a function to check health of map map Components
-        Shoot(map, map_size, Spaceship_position , spaceship_type);                                      // Calling a function to fire bullets
-        is_dead(map, map_size);                                                        // Calling a function to check health of map map Components
-        user_level(point , level);
-        save(map, map_size, quorum_point, point, spaceship_health, Enemies_history , level , spaceship_type );   // Calling a function to save game data
+        Move_Enemy_Spaceship(map, map_size, spaceship_health, point, Enemies_history, spaceship_type); // Calling a function to move enemy spaceships
+        is_dead(map, map_size);                                                                        // Calling a function to check health of map map Components
+        Shoot(map, map_size, Spaceship_position, spaceship_type);                                      // Calling a function to fire bullets
+        is_dead(map, map_size);                                                                        // Calling a function to check health of map map Components
+        user_level(point, level);
+        save(map, map_size, quorum_point, point, spaceship_health, Enemies_history, level, spaceship_type); // Calling a function to save game data
     }
 }
 
-void positioning_Advanced(vector<vector<Map_Components>> &map, int map_size, int &spaceship_health, vector<string> &Enemies_history , int level)
+void positioning_Advanced(vector<vector<Map_Components>> &map, int map_size, int &spaceship_health, vector<string> &Enemies_history, int level)
 {
     srand(time(0)); // A function that generates random numbers with an initial seed of time 0
     unsigned int row, column;
@@ -964,24 +976,24 @@ void positioning_Advanced(vector<vector<Map_Components>> &map, int map_size, int
     }
     int Enemy_Type;
     bool Invalid_position = false;
-    if (level > 3 )
+    if (level > 3)
     {
-        Enemy_Type =  3 ; // This function generates number 3
+        Enemy_Type = 3; // This function generates number 3
     }
-    else if (level > 2 )
+    else if (level > 2)
     {
-        Enemy_Type = rand() % 2  + 2 ; // This function generates random numbers between 2 and 3
+        Enemy_Type = rand() % 2 + 2; // This function generates random numbers between 2 and 3
     }
-    else if (level > 1 )
+    else if (level > 1)
     {
-        Enemy_Type = rand() % 3  + 1 ; // This function generates random numbers between 1 and 3
+        Enemy_Type = rand() % 3 + 1; // This function generates random numbers between 1 and 3
     }
     else if (level >= 0)
     {
         Enemy_Type = rand() % 4; // This function generates random numbers between 0 and 3
     }
 
-    switch (Enemy_Type)      // This section selects the type of enemy to create in the map
+    switch (Enemy_Type) // This section selects the type of enemy to create in the map
     {
     case 0: // In each section of the switch case, a type of enemy is created
         column = rand() % map_size;
@@ -1080,36 +1092,81 @@ void positioning_Advanced(vector<vector<Map_Components>> &map, int map_size, int
     }
 }
 
-void Save_History(int level , double point , int spaceship_health , int quorum_point )
+void Save_History(int level, double point, int spaceship_health, int quorum_point)
 {
-    ofstream out("History.txt" , ios :: out | ios :: app );
-    out << "level : " << level << " - " << "point : " << point << " - " << "health : " << spaceship_health << " - " ;
-    if ( point >= quorum_point )
+    ofstream out("History.txt", ios ::out | ios ::app);
+    out << "level : " << level << " - "
+        << "point : " << point << " - "
+        << "health : " << spaceship_health << " - ";
+    if (point >= quorum_point)
     {
-        out << "win" << endl ;
+        out << "win" << endl;
     }
     else if (spaceship_health <= 0)
     {
-        out << "lose" << endl ;
+        out << "lose" << endl;
     }
     else
     {
-        out << "Continue" << endl ;
+        out << "Continue" << endl;
     }
     out.close();
 }
 
 void display_History()
 {
-    ifstream in ;
+    ifstream in;
     in.open("History.txt");
-    string data ;
-    cout << Bright_Yellow_new << "History of games : " << Reset << endl ;
-    while (getline( in , data , '\n' ))
+    string data;
+    cout << Bright_Yellow_new << "History of games : " << Reset << endl;
+    while (getline(in, data, '\n'))
     {
-        cout << data << endl ;
+        cout << data << endl;
     }
-    cout << Bright_Yellow_new << "Press one of the keys to return to the menu !" << Reset << endl ;
+    cout << Bright_Yellow_new << "Press one of the keys to return to the menu !" << Reset << endl;
     int temp = getch();
     in.close();
+}
+
+void SpaceShips_Description()
+{
+    system("cls || clear"); // This function clears the console
+    cout << Bright_Green << "SpaceShips : " << endl
+         << "Health : 3 " << endl
+         << "damage : infinity " << endl
+         << "size : 1*1 " << endl
+         << "character : [#] " << Reset << endl;
+    cout << "________________________________________" << endl;
+    cout << Bright_Cyan << "Dart : " << endl
+         << "Health : 1 " << endl
+         << "damage : 1 " << endl
+         << "size : 1*1 " << endl
+         << "character : [*] " << Reset << endl;
+    cout << "________________________________________" << endl;
+    cout << Bright_Blue << "Striker : " << endl
+         << "Health : 2 " << endl
+         << "damage : 1 " << endl
+         << "size : 2*2 " << endl
+         << "character : [*][*] " << endl
+         << "            [*][*] " << Reset << endl;
+    cout << "________________________________________" << endl;
+    cout << Blue << "Wraith : " << endl
+         << "Health : 4 " << endl
+         << "damage : 1 " << endl
+         << "size : 3*3 " << endl
+         << "character : [*][*][*] " << endl
+         << "            [*][*][*] " << endl
+         << "            [*][*][*] " << Reset << endl;
+    cout << "________________________________________" << endl;
+    cout << Magenta << "Banshee : " << endl
+         << "Health : 6 " << endl
+         << "damage : 1 " << endl
+         << "size : 4*4 " << endl
+         << "character : [*][*][*][*] " << endl
+         << "            [*][*][*][*] " << endl
+         << "            [*][*][*][*] " << endl
+         << "            [*][*][*][*] " << Reset << endl;
+    cout << "________________________________________" << endl;
+    cout << Bright_Yellow_new << "Press one of the keys to return to the menu !" << Reset << endl;
+    int temp = getch();
 }
