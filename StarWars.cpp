@@ -54,9 +54,12 @@ void save(vector<vector<Map_Components>> map, int map_size, int quorum_point, do
 void Continue_Game();                                                                                                                                                                       // A function that loads the previously unfinished game file
 void Run_game_basic(vector<vector<Map_Components>> &map, int &map_size, int &quorum_point, double &point, int &spaceship_health, int &Spaceship_position, vector<string> &Enemies_history , int& level); // A function that has the task of running the gameplay
 bool Enemy_is_in(vector<vector<Map_Components>> &map, int &map_size);                                                                                                                       // A function that checks if there is an enemy in the map
-bool End_Game(int quorum_point, double point, int spaceship_health , vector<string> &Enemies_history ); // This function checks if the game has been completed or not and displays the killed enemies
+bool End_Game(int quorum_point, double point, int spaceship_health , vector<string> &Enemies_history , int level ); // This function checks if the game has been completed or not and displays the killed enemies
 void user_level(int point , int& level);
-
+void Run_game_Advanced(vector<vector<Map_Components>> &map, int &map_size, int &quorum_point, double &point, int &spaceship_health, int &Spaceship_position, vector<string> &Enemies_history , int& level);
+void positioning_Advanced(vector<vector<Map_Components>> &map, int map_size, int &spaceship_health, vector<string> &Enemies_history , int level);
+void Save_History(int level , double point , int spaceship_health , int quorum_point );
+void display_History();
 int main()
 {
     while (Menu())
@@ -114,7 +117,7 @@ bool Menu()
             break;
 
         case '6':
-            /*code*/
+            display_History();
             return true;
             break;
 
@@ -201,7 +204,6 @@ void Initializer_Basic()
     int Spaceship_position;
     int level ;
     vector<string> Enemies_history;
-    // positioning(map, map_size, spaceship_health, Enemies_history); // This function specifies the position of game elements
     Run_game_basic(map, map_size, quorum_point, point, spaceship_health, Spaceship_position, Enemies_history , level); // Calling the run game function
 }
 
@@ -269,6 +271,12 @@ void Initializer_Advanced()
     } while (Invalid_Selection);
     cout << "Enter the map size : " << map_size << endl;
     cout << "Enter the quorum for the win : " << quorum_point << endl;
+    double point = 0;
+    int spaceship_health;
+    int Spaceship_position;
+    int level ;
+    vector<string> Enemies_history;
+    Run_game_Advanced(map, map_size, quorum_point, point, spaceship_health, Spaceship_position, Enemies_history , level); // Calling the run game function
 }
 
 void positioning(vector<vector<Map_Components>> &map, int map_size, int &spaceship_health, vector<string> &Enemies_history)
@@ -507,6 +515,7 @@ string Move_Spaceship(vector<vector<Map_Components>> &map, int map_size, int &Sp
 
     case 27:
         save(map, map_size, quorum_point, point, spaceship_health, Enemies_history , level);
+        Save_History( level , point , spaceship_health , quorum_point );
         return "saved successfully";
         break;
 
@@ -520,6 +529,7 @@ string Move_Spaceship(vector<vector<Map_Components>> &map, int map_size, int &Sp
             if (user_slection == 115)
             {
                 save(map, map_size, quorum_point, point, spaceship_health, Enemies_history , level);
+                Save_History( level , point , spaceship_health , quorum_point );
                 return "saved successfully";
                 break;
             }
@@ -791,14 +801,13 @@ void Continue_Game()
 
 void Run_game_basic(vector<vector<Map_Components>> &map, int &map_size, int &quorum_point, double &point, int &spaceship_health, int &Spaceship_position, vector<string> &Enemies_history , int& level)
 {
-    while (true && !End_Game(quorum_point, point, spaceship_health ,Enemies_history )) // just for test
+    while (true && !End_Game(quorum_point, point, spaceship_health ,Enemies_history , level )) // just for test
     {
         if (!Enemy_is_in(map, map_size))
         {
             positioning(map, map_size, spaceship_health, Enemies_history); // This function specifies the position of game elements
         }
-        display(map, map_size);
-        user_level(point , level);                                                                                                                // This function displays the game map
+        display(map, map_size);                                                                                                                // This function displays the game map
         Show_information(map_size, quorum_point, point, spaceship_health , level);                                                                     // call the function that displays game information
         if (Move_Spaceship(map, map_size, Spaceship_position, quorum_point, point, spaceship_health, Enemies_history , level) == "saved successfully") // call the Move_Spaceship function
         {
@@ -809,6 +818,7 @@ void Run_game_basic(vector<vector<Map_Components>> &map, int &map_size, int &quo
         is_dead(map, map_size);                                                        // Calling a function to check health of map map Components
         Shoot(map, map_size, Spaceship_position);                                      // Calling a function to fire bullets
         is_dead(map, map_size);                                                        // Calling a function to check health of map map Components
+        user_level(point , level);
         save(map, map_size, quorum_point, point, spaceship_health, Enemies_history , level );   // Calling a function to save game data
     }
 }
@@ -829,7 +839,7 @@ bool Enemy_is_in(vector<vector<Map_Components>> &map, int &map_size)
     return false;
 }
 
-bool End_Game(int quorum_point, double point, int spaceship_health , vector<string> &Enemies_history )
+bool End_Game(int quorum_point, double point, int spaceship_health , vector<string> &Enemies_history , int level )
 {
     // In the following few lines, the number of enemies killed by type is specified
     int Dart_counter = 0 , Striker_counter = 0 , Wraith_counter = 0 , Banshee_counter = 0 ;
@@ -871,6 +881,7 @@ bool End_Game(int quorum_point, double point, int spaceship_health , vector<stri
              << Bright_Blue << "Striker : " << Striker_counter << endl << Reset
              << Blue << "Wraith : " << Wraith_counter << endl << Reset
              << Magenta << "Banshee : " << Banshee_counter << endl << Reset ;
+        Save_History( level , point , spaceship_health , quorum_point );
         return true;
     }
     else if (point >= quorum_point)
@@ -891,6 +902,7 @@ bool End_Game(int quorum_point, double point, int spaceship_health , vector<stri
              << Bright_Blue << "Striker : " << Striker_counter << endl << Reset
              << Blue << "Wraith : " << Wraith_counter << endl << Reset
              << Magenta << "Banshee : " << Banshee_counter << endl << Reset ;
+        Save_History( level , point , spaceship_health , quorum_point );
             return true;
         }
     }
@@ -904,4 +916,205 @@ bool End_Game(int quorum_point, double point, int spaceship_health , vector<stri
 void user_level(int point , int& level)
 {
     level = point / 200 ;
+}
+
+void Run_game_Advanced(vector<vector<Map_Components>> &map, int &map_size, int &quorum_point, double &point, int &spaceship_health, int &Spaceship_position, vector<string> &Enemies_history , int& level)
+{
+    while (true && !End_Game(quorum_point, point, spaceship_health ,Enemies_history , level )) // just for test
+    {
+        if (!Enemy_is_in(map, map_size))
+        {
+            positioning_Advanced(map, map_size, spaceship_health, Enemies_history , level); // This function specifies the position of game elements
+        }
+        display(map, map_size);                                                                                                                // This function displays the game map
+        Show_information(map_size, quorum_point, point, spaceship_health , level);                                                                     // call the function that displays game information
+        if (Move_Spaceship(map, map_size, Spaceship_position, quorum_point, point, spaceship_health, Enemies_history , level) == "saved successfully") // call the Move_Spaceship function
+        {
+            cout << Bright_Green << "Game saved !" << Reset;
+            break;
+        }
+        Move_Enemy_Spaceship(map, map_size, spaceship_health, point, Enemies_history); // Calling a function to move enemy spaceships
+        is_dead(map, map_size);                                                        // Calling a function to check health of map map Components
+        Shoot(map, map_size, Spaceship_position);                                      // Calling a function to fire bullets
+        is_dead(map, map_size);                                                        // Calling a function to check health of map map Components
+        user_level(point , level);
+        save(map, map_size, quorum_point, point, spaceship_health, Enemies_history , level );   // Calling a function to save game data
+    }
+}
+
+void positioning_Advanced(vector<vector<Map_Components>> &map, int map_size, int &spaceship_health, vector<string> &Enemies_history , int level)
+{
+    srand(time(0)); // A function that generates random numbers with an initial seed of time 0
+    unsigned int row, column;
+    bool in_it = false;
+    for (size_t i = 0; i < map_size; i++) // In these few lines, if there is no native ship, a ship will be created
+    {
+        if (map[map_size - 1][i].name == "Spaceship")
+        {
+            in_it = true;
+            spaceship_health = map[map_size - 1][i].Health;
+            break;
+        }
+    }
+    if (!in_it)
+    {
+        map[map_size - 1][(map_size - 1) / 2].name = "Spaceship";
+        map[map_size - 1][(map_size - 1) / 2].Health = 3;
+        map[map_size - 1][(map_size - 1) / 2].damage = 2147483647; // The largest possible value for an integer data type
+        map[map_size - 1][(map_size - 1) / 2].size = 1;
+        map[map_size - 1][(map_size - 1) / 2].color = "Bright_Green";
+        map[map_size - 1][(map_size - 1) / 2].character = "[#]";
+
+        spaceship_health = map[map_size - 1][(map_size - 1) / 2].Health;
+    }
+    int Enemy_Type;
+    bool Invalid_position = false;
+    if (level > 3 )
+    {
+        Enemy_Type =  3 ; // This function generates number 3
+    }
+    else if (level > 2 )
+    {
+        Enemy_Type = rand() % 2  + 2 ; // This function generates random numbers between 2 and 3
+    }
+    else if (level > 1 )
+    {
+        Enemy_Type = rand() % 3  + 1 ; // This function generates random numbers between 1 and 3
+    }
+    else if (level >= 0)
+    {
+        Enemy_Type = rand() % 4; // This function generates random numbers between 0 and 3
+    }
+
+    switch (Enemy_Type)      // This section selects the type of enemy to create in the map
+    {
+    case 0: // In each section of the switch case, a type of enemy is created
+        column = rand() % map_size;
+        map[0][column].name = "Dart";
+        map[0][column].Health = 1;
+        map[0][column].damage = 1;
+        map[0][column].size = 1 * 1;
+        map[0][column].color = "Bright_Cyan";
+        map[0][column].character = "[*]";
+        Enemies_history.push_back("Dart");
+        break;
+
+    case 1:
+        do
+        {
+            Invalid_position = false;
+            column = rand() % map_size;
+            if (column + 2 <= map_size)
+            {
+                for (size_t i = 0; i < 2; i++)
+                {
+                    for (size_t j = 0; j < 2; j++)
+                    {
+                        map[i][column + j].name = "Striker";
+                        map[i][column + j].Health = 2;
+                        map[i][column + j].damage = 1;
+                        map[i][column + j].size = 2 * 2;
+                        map[i][column + j].color = "Bright_Blue";
+                        map[i][column + j].character = "[*]";
+                    }
+                }
+            }
+            else
+            {
+                Invalid_position = true;
+            }
+        } while (Invalid_position);
+        Enemies_history.push_back("Striker");
+        break;
+
+    case 2:
+        do
+        {
+            Invalid_position = false;
+            column = rand() % map_size;
+            if (column + 3 <= map_size)
+            {
+                for (size_t i = 0; i < 3; i++)
+                {
+                    for (size_t j = 0; j < 3; j++)
+                    {
+                        map[i][column + j].name = "Wraith";
+                        map[i][column + j].Health = 4;
+                        map[i][column + j].damage = 1;
+                        map[i][column + j].size = 3 * 3;
+                        map[i][column + j].color = "Blue";
+                        map[i][column + j].character = "[*]";
+                    }
+                }
+            }
+            else
+            {
+                Invalid_position = true;
+            }
+        } while (Invalid_position);
+        Enemies_history.push_back("Wraith");
+        break;
+
+    case 3:
+        do
+        {
+            Invalid_position = false;
+            column = rand() % map_size;
+            if (column + 4 <= map_size)
+            {
+                for (size_t i = 0; i < 4; i++)
+                {
+                    for (size_t j = 0; j < 4; j++)
+                    {
+                        map[i][column + j].name = "Banshee";
+                        map[i][column + j].Health = 6;
+                        map[i][column + j].damage = 1;
+                        map[i][column + j].size = 4 * 4;
+                        map[i][column + j].color = "Magenta";
+                        map[i][column + j].character = "[*]";
+                    }
+                }
+            }
+            else
+            {
+                Invalid_position = true;
+            }
+        } while (Invalid_position);
+        Enemies_history.push_back("Banshee");
+        break;
+    }
+}
+
+void Save_History(int level , double point , int spaceship_health , int quorum_point )
+{
+    ofstream out("History.txt" , ios :: out | ios :: app );
+    out << "level : " << level << " - " << "point : " << point << " - " << "health : " << spaceship_health << " - " ;
+    if ( point >= quorum_point )
+    {
+        out << "win" << endl ;
+    }
+    else if (spaceship_health <= 0)
+    {
+        out << "lose" << endl ;
+    }
+    else
+    {
+        out << "Continue" << endl ;
+    }
+    out.close();
+}
+
+void display_History()
+{
+    ifstream in ;
+    in.open("History.txt");
+    string data ;
+    cout << Bright_Yellow_new << "History of games : " << Reset << endl ;
+    while (getline( in , data , '\n' ))
+    {
+        cout << data << endl ;
+    }
+    cout << Bright_Yellow_new << "Press one of the keys to return to the menu !" << Reset << endl ;
+    int temp = getch();
+    in.close();
 }
