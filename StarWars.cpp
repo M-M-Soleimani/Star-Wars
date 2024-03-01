@@ -6,6 +6,7 @@
 #include <time.h>
 #include <stdlib.h>
 #include <fstream>
+//#include<ncurses>
 
 // Defining color codes to beautify the game
 #define Black "\u001b[30m"
